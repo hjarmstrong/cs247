@@ -4,6 +4,10 @@
 *.o
 *.obj
 
+#exes
+Straights
+answers
+
 # Compiled Dynamic libraries
 *.so
 *.dylib
