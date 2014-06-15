@@ -11,7 +11,8 @@ class Deck
     public:
     Deck();
     ~Deck();
-
+    
+    const std::vector<Card *> &deckList();
     void shuffle();
 
     private:

@@ -7,7 +7,8 @@
 class Player
 {
     public:
-    Player(std::vector<Card *> &, bool);
+    Player(bool);
+    void deal(std::vector<Card *> &);
     virtual ~Player();
     int score() const;
     const std::vector<Card *> &hand() const;

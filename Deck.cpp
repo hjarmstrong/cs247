@@ -61,3 +61,8 @@ ostream &operator<<(ostream &sout, const Deck &d)
     }
     return sout;
 }
+
+const std::vector<Card *> &deckList()
+{
+    return cards_; 
+}

@@ -5,21 +5,29 @@
 
 using namespace std;
 
-Player::Player(vector<Card *> &cards, bool human) : score_(0), isHuman_(human)
+Player::Player(bool human) : score_(0), isHuman_(human) {}
+
+void Player::deal(vector<Card *> &cards)
 {
+    for(vector<Card *>::iterator it = hand_.begin(); it != hand_.end(); it++)
+    {
+        //delete *it;
+    }
+
+    hand_.clear();
+
     for(vector<Card *>::iterator it = cards.begin(); it != cards.end(); it++)
     {
         hand_.push_back(*it);
     }
 }
-
 void Player::play(Card c)
 {
     for(vector<Card *>::iterator it = hand_.begin(); it != hand_.end(); it++)
     {
         if(c == **it)
         {
-            delete *it;
+            //delete *it;
             hand_.erase(it);
             return;
         }
@@ -46,7 +54,7 @@ Player::~Player()
 {
     for(vector<Card *>::iterator it = hand_.begin(); it != hand_.end(); it++)
     {
-        delete *it;
+        //delete *it;
     }
 }
 
