@@ -7,17 +7,18 @@
 class Player
 {
     public:
-    Player(std::vector<Card *> &);
+    Player(std::vector<Card *> &, bool);
     virtual ~Player();
     int score() const;
     const std::vector<Card *> &hand() const;
     void play(Card);
     void discard(Card);
-    virtual void RageQuit() = 0;
+    void rageQuit();
 
     private:
 //     int id_;
     int score_;
+    bool isHuman_;
 //    static int nextid = 1;
     std::vector<Card *> hand_;
 };

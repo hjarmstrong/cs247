@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Player::Player(vector<Card *> &cards) : score_(0)
+Player::Player(vector<Card *> &cards, bool human) : score_(0), isHuman_(human)
 {
     for(vector<Card *>::iterator it = cards.begin(); it != cards.end(); it++)
     {
@@ -31,6 +31,15 @@ void Player::discard(Card c)
 {
     play(c);
     score_ += static_cast<int>( c.getRank() ) + 1;
+}
+
+void Player::rageQuit()
+{
+    if(isHuman_ == false)
+    {
+        assert(false);
+    }
+    isHuman_ = false;
 }
 
 Player::~Player()
