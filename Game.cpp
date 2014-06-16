@@ -39,7 +39,7 @@ Game::~Game()
     delete deck_;
 }
 
-const std::vector<player *> &Game::players() const
+const std::vector<Player *> &Game::players() const
 {
     return players_;
 }
@@ -95,8 +95,6 @@ void Game::deck()
 
 void Game::playRound()
 {
-   Table curent(); 
-
     int playerTurn;
 
     
@@ -114,18 +112,55 @@ void Game::playRound()
 
 fail:
     cout << "A new round begins. It's player " << playerTurn  << "'s turn to play."
-
-
-    if(players_.at(playerTurn).isHuman())
+    table currentTable();
+    for(int i = 0; i < 52; i++)
     {
-        printTable();
-        cout << "Your Hand:";
-        for(int i = 0; i < players_.at(playerTurn).hand().size(); i++)
-        {
-            cout << " " << *players_.at(playerTurn).hand().at(i);
-        }
-        cout << endl;
-        for(int i = 0; i < 
-    }
+        int turn = (i + playerTurn) % players_.size();
 
+        set<Card> legal = currentTable.legalPlays();       
+        vector<Card> currentLegal;
+
+        if(players_.at(turn).isHuman())
+        {
+            cout << currentTable << endl;
+            cout << "Your Hand:";
+        }
+
+            for(int k = 0; k < players_.at(playerTurn).hand().size(); k++)
+            {
+                if(legal.contains(players_.at(turn).hand()))
+                {
+                    currentLegal.push_back(players_.at(turn).hand());
+                }
+                if(players_.at(turn).isHuman())
+                {
+                    cout << " " << *players_.at(turn).hand().at(k);
+                }
+            }
+            if(players_.at(turn).isHuman())
+            {
+                string op;
+
+                cout << endl;
+                cout << "Legal plays:"
+                for(int i = 0; i < currentLegal.size(); i++)
+                {
+                    cout << " " << currentLegal.at(i);
+                }
+                cout << endl;
+                cout << ">";
+                cin >> op;
+            }
+            else
+            {
+                if(currentLegal.empty())
+                {
+                    players_.at(turn)->discard();
+                }
+                else
+                {
+                    play(currentLegal.at(0));
+                }
+            }
+    }
 }

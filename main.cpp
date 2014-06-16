@@ -1,12 +1,12 @@
-#include <cstdio>
+#include <cstdlib>
 #include <sstream>
 #include <string>
+#include "Game.h"
 
 using namespace std;
 
 int main (int argc, char *argv[])
 {
-
     int rand = 0;
     if(argc > 1)
     {
@@ -16,7 +16,7 @@ int main (int argc, char *argv[])
         srand48(rand);
     }
     
-    Game theGame();
+    Game theGame;
     theGame.play();
     return 0;
 }

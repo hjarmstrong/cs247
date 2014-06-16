@@ -11,13 +11,13 @@ class Game
     public:
     Game();
     ~Game();
-    const std::vector<player *> players() const;
+    const std::vector<Player *> players() const;
     void play();
     void deck();
     bool playRound();
 
     private:
-    std::vector<player *> players_;
+    std::vector<Player *> players_;
     Deck *deck_;
 };
 
