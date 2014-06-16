@@ -1,6 +1,7 @@
 #include "Game.h"
 #include <vector>
 #include <iostream>
+#include <cassert>
 #include <limits>
 #include "Deck.h"
 
@@ -14,7 +15,10 @@ Game::Game() : deck_(new Deck)
     {
         cout << "Is player " << i << " a human(h) or a computer(c)?"
         cin >> input;
-        if(input == h)
+
+        assert(input == "h" || input == "H" || input == "c" || input == "C");
+
+        if(input == "h" || input == "H")
         {
             players_.push_back(new player(true));
         }
@@ -53,7 +57,7 @@ void Game::play()
             lowestOwner = i;
         }
 
-        if(players_[i].score() >= 80)
+        if(players_.at(i).score() >= 80)
         {
             gameOver = true;
         }
@@ -77,7 +81,7 @@ void Game::play()
         hand.clear();
     }
 
-    if(!round_.play())
+    if(!playRound())
     {
         return;
     }
@@ -89,44 +93,9 @@ void Game::deck()
     cout << deck_;
 }
 
-void Game::printTable()
-{
-
-    cout << "Cards on the table:" << endl << "Clubs:";
-    for(int i = 0; i < 13; i++)
-    {
-        if(clubs_[i])
-            cout << " " << i;
-    }
-    cout << endl << "Diamonds:";
-    for(int i = 0; i < 13; i++)
-    {
-        if(diamonds_[i])
-            cout << " " << i;
-    }
-    cout << endl << "Hearts:";
-    for(int i = 0; i < 13; i++)
-    {
-        if(hearts_[i])
-            cout << " " << i;
-    }
-    cout << endl << "Spades:";
-    for(int i = 0; i < 13; i++)
-    {
-        if(spades_[i])
-            cout << " " << i;
-    }
-}
-
 void Game::playRound()
 {
-    for(int i = 0; i < 13; i++)
-    {
-        spades_[i] = false;
-        hearts_[i] = false;
-        clubs_[i] = false;
-        diamonds_[i] = false;
-    }
+   Table curent(); 
 
     int playerTurn;
 

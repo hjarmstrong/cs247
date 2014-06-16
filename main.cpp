@@ -13,10 +13,10 @@ int main (int argc, char *argv[])
         string argsrand = argv[1];
         istringstream args(argsrand);
         args >> rand;
-        printf(" ARG IS %d\n", rand);
+        srand48(rand);
     }
     
-    Game theGame(rand);
+    Game theGame();
     theGame.play();
     return 0;
 }
