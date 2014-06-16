@@ -17,6 +17,13 @@ int main (int argc, char *argv[])
     }
     
     Game theGame;
+    try
+    {
     theGame.play();
+    }
+    catch(const char *)
+    {
+        return 0;
+    }
     return 0;
 }

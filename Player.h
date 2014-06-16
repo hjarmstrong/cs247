@@ -3,25 +3,27 @@
 
 #include <vector>
 #include "Card.h"
+#include "Table.h"
+#include "Deck.h"
 
 class Player
 {
     public:
-    Player(bool);
+    Player();
     void deal(std::vector<Card *> &);
     virtual ~Player();
     int score() const;
+    int id() const;
     const std::vector<Card *> &hand() const;
     void play(Card);
     void discard(Card);
-    void rageQuit();
+    virtual void turn(std::vector<Card>, Deck &, Table &) = 0;
 
     private:
-//     int id_;
     int score_;
-    bool isHuman_;
-//    static int nextid = 1;
     std::vector<Card *> hand_;
+    int id_;
+    static int nextid;
 };
 
 #endif

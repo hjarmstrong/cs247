@@ -29,6 +29,11 @@ Deck::~Deck()
     }
 }
 
+const std::vector<Card *> &deckList()
+{
+    return cards_;
+}
+
 void Deck::shuffle()
 {
 	int n = kCardCount;

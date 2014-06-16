@@ -5,7 +5,9 @@
 
 using namespace std;
 
-Player::Player(bool human) : score_(0), isHuman_(human) {}
+int Player::nextid = 1;
+
+Player::Player() : score_(0), id_(nextid++) {}
 
 void Player::deal(vector<Card *> &cards)
 {
@@ -21,6 +23,7 @@ void Player::deal(vector<Card *> &cards)
         hand_.push_back(*it);
     }
 }
+
 void Player::play(Card c)
 {
     for(vector<Card *>::iterator it = hand_.begin(); it != hand_.end(); it++)
@@ -41,13 +44,14 @@ void Player::discard(Card c)
     score_ += static_cast<int>( c.getRank() ) + 1;
 }
 
-void Player::rageQuit()
+int Player::score() const
 {
-    if(isHuman_ == false)
-    {
-        assert(false);
-    }
-    isHuman_ = false;
+    return score_;
+}
+
+int Player::id() const
+{
+    return id_;
 }
 
 Player::~Player()
