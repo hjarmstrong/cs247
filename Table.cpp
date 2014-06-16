@@ -2,6 +2,8 @@
 #include "Table.h"
 #include <cassert>
 #include <vector>
+#include <set>
+#include <functional>
 
 using namespace std;
 
@@ -41,68 +43,68 @@ void Table::playCard(Card e)
 
 }
 
-vector<Card> Table::legalMoves()
+set<Card> Table::legalMoves()
 {
-    vector<Card> ret;
+    set<Card> ret;
     if(spades_[SEVEN] == false)
     {
-        ret.push_back(Card(SPADE, SEVEN));
+        ret.insert(Card(SPADE, SEVEN));
         return ret; 
     }
     //We start at 1 because we don't care about -1
-    for(int i = 1; i < static_cast<int>(RANK_COUNT); i++)
+    for(int i = 1; i < static_cast<int>(RANK_COUNT - 1); i++)
     {
         if(spades_[i] == true)
         {
             if(i <= static_cast<int>(SEVEN))
             {
-                ret.push_back(Card(SPADE, static_cast<Rank>(i - 1)));
+                ret.insert(Card(SPADE, static_cast<Rank>(i - 1)));
             }
             if(i >= static_cast<int>(SEVEN))
             {
-                ret.push_back(Card(SPADE, static_cast<Rank>(i + 1)));
+                ret.insert(Card(SPADE, static_cast<Rank>(i + 1)));
             }
         }
     }
-    for(int i = 1; i < static_cast<int>(RANK_COUNT); i++)
+    for(int i = 1; i < static_cast<int>(RANK_COUNT - 1); i++)
     {
         if(hearts_[i] == true)
         {
             if(i <= static_cast<int>(SEVEN))
             {
-                ret.push_back(Card(HEART, static_cast<Rank>(i - 1)));
+                ret.insert(Card(HEART, static_cast<Rank>(i - 1)));
             }
             if(i >= static_cast<int>(SEVEN))
             {
-                ret.push_back(Card(HEART, static_cast<Rank>(i + 1)));
+                ret.insert(Card(HEART, static_cast<Rank>(i + 1)));
             }
         }
     }
-    for(int i = 1; i < static_cast<int>(RANK_COUNT); i++)
+    for(int i = 1; i < static_cast<int>(RANK_COUNT - 1); i++)
     {
         if(diamonds_[i] == true)
         {
             if(i <= static_cast<int>(SEVEN))
             {
-                ret.push_back(Card(DIAMOND, static_cast<Rank>(i - 1)));
+                ret.insert(Card(DIAMOND, static_cast<Rank>(i - 1)));
             }
             if(i >= static_cast<int>(SEVEN))
             {
-                ret.push_back(Card(DIAMOND, static_cast<Rank>(i + 1)));
+                ret.insert(Card(DIAMOND, static_cast<Rank>(i + 1)));
             }
         }
     }
-    for(int i = 1; i < static_cast<int>(RANK_COUNT); i++)
+    for(int i = 1; i < static_cast<int>(RANK_COUNT - 1); i++)
     {
         if(clubs_[i] == true)
         {
             if(i <= static_cast<int>(SEVEN))
             {
-                ret.push_back(Card(CLUB, static_cast<Rank>(i - 1)));
+                ret.insert(Card(CLUB, static_cast<Rank>(i - 1)));
             }
             if(i >= static_cast<int>(SEVEN))
             {
-                ret.push_back(Card(CLUB, static_cast<Rank>(i + 1)));
+                ret.insert(Card(CLUB, static_cast<Rank>(i + 1)));
             }
         }
     }
