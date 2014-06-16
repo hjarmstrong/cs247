@@ -2,6 +2,7 @@
 #define TABLE_H
 
 #include <iostream>
+#include <vector>
 #include "Card.h"
 
 class Table
@@ -10,7 +11,7 @@ class Table
     public:
     Table();
     void playCard(Card c);
-    vector<Card *> &legalMoves();
+    std::vector<Card> legalMoves();
     private:
     bool spades_[13];
     bool hearts_[13];

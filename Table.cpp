@@ -3,6 +3,8 @@
 #include <cassert>
 #include <vector>
 
+using namespace std;
+
 Table::Table()
 {
     for(int i = 0; i < 13; i++)
@@ -14,38 +16,38 @@ Table::Table()
     }
 }
 
-void Card::playCard(Card e)
+void Table::playCard(Card e)
 {
-    if(Card.getSuit() == SPADES)
+    if(e.getSuit() == SPADE)
     {
-        assert(spades_[Card.getRank() + 1] == false); 
-        spades_[Card.getRank() + 1] = true;
+        assert(spades_[e.getRank() + 1] == false); 
+        spades_[e.getRank() + 1] = true;
     }
-    if(Card.getSuit() == HEARTS)
+    if(e.getSuit() == HEART)
     {
-        assert(hearts_[Card.getRank() + 1] == false); 
-        spades_[Card.getRank() + 1] = true;
+        assert(hearts_[e.getRank() + 1] == false); 
+        spades_[e.getRank() + 1] = true;
     }
-    if(Card.getSuit() == CLUBS)
+    if(e.getSuit() == CLUB)
     {
-        assert(clubs_[Card.getRank() + 1] == false); 
-        clubs_[Card.getRank() + 1] = true;
+        assert(clubs_[e.getRank() + 1] == false); 
+        clubs_[e.getRank() + 1] = true;
     }
-    if(Card.getSuit() == DIAMONDS)
+    if(e.getSuit() == DIAMOND)
     {
-        assert(clubs_[diamonds.getRank() + 1] == false); 
-        diamonds_[Card.getRank() + 1] = true;
+        assert(clubs_[e.getRank() + 1] == false); 
+        diamonds_[e.getRank() + 1] = true;
     }
 
 }
 
-vector<Card> &Table::legalMoves()
+vector<Card> Table::legalMoves()
 {
     vector<Card> ret;
-    if(spades[SEVEN] == false)
+    if(spades_[SEVEN] == false)
     {
-        ret.push_back(Card(SEVEN, SPADE));
-        return; 
+        ret.push_back(Card(SPADE, SEVEN));
+        return ret; 
     }
     //We start at 1 because we don't care about -1
     for(int i = 1; i < static_cast<int>(RANK_COUNT); i++)
@@ -54,11 +56,11 @@ vector<Card> &Table::legalMoves()
         {
             if(i <= static_cast<int>(SEVEN))
             {
-                ret.push_back(Card(static_cast<RANK>(i - 1), SPADE));
+                ret.push_back(Card(SPADE, static_cast<Rank>(i - 1)));
             }
             if(i >= static_cast<int>(SEVEN))
             {
-                ret.push_back(Card(static_cast<Rank>(i + 1), SPADE));
+                ret.push_back(Card(SPADE, static_cast<Rank>(i + 1)));
             }
         }
     }
@@ -68,11 +70,11 @@ vector<Card> &Table::legalMoves()
         {
             if(i <= static_cast<int>(SEVEN))
             {
-                ret.push_back(Card(static_cast<RANK>(i - 1), HEART));
+                ret.push_back(Card(HEART, static_cast<Rank>(i - 1)));
             }
             if(i >= static_cast<int>(SEVEN))
             {
-                ret.push_back(Card(static_cast<Rank>(i + 1), HEART));
+                ret.push_back(Card(HEART, static_cast<Rank>(i + 1)));
             }
         }
     }
@@ -82,11 +84,11 @@ vector<Card> &Table::legalMoves()
         {
             if(i <= static_cast<int>(SEVEN))
             {
-                ret.push_back(Card(static_cast<RANK>(i - 1), DIAMOND));
+                ret.push_back(Card(DIAMOND, static_cast<Rank>(i - 1)));
             }
             if(i >= static_cast<int>(SEVEN))
             {
-                ret.push_back(Card(static_cast<Rank>(i + 1), DUAMOND));
+                ret.push_back(Card(DIAMOND, static_cast<Rank>(i + 1)));
             }
         }
     }
@@ -96,18 +98,18 @@ vector<Card> &Table::legalMoves()
         {
             if(i <= static_cast<int>(SEVEN))
             {
-                ret.push_back(Card(static_cast<RANK>(i - 1), CLUB));
+                ret.push_back(Card(CLUB, static_cast<Rank>(i - 1)));
             }
             if(i >= static_cast<int>(SEVEN))
             {
-                ret.push_back(Card(static_cast<Rank>(i + 1), CLUB));
+                ret.push_back(Card(CLUB, static_cast<Rank>(i + 1)));
             }
         }
     }
     return ret;
 }
 
-std::ostream &operator<<(std::ostream &sout, const Table &t);
+std::ostream &operator<<(std::ostream &sout, const Table &t)
 {
     sout << "Cards on the table:" << endl;
     sout << "Clubs:";
