@@ -57,7 +57,7 @@ void HumanPlayer::turn(std::vector<Card> legal, Deck &deck, Table &table)
                else
                {
                    cout << "Player " << id() << " discards " << op.card << "." << endl;
-                   discard(op.card);
+                   discardCard(op.card);
                    return;
                }
                break;

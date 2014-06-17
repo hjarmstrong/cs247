@@ -12,16 +12,22 @@ class Player
     Player();
     void deal(std::vector<Card *> &);
     virtual ~Player();
-    int score() const;
+    int oldScore() const;
+    int currentScore() const;
     int id() const;
     const std::vector<Card *> &hand() const;
+    const std::vector<Card *> &discard() const;
+    void resetDiscard();
+    void setOldScore(int);
     void play(Card);
-    void discard(Card);
+    void discardCard(Card);
     virtual void turn(std::vector<Card>, Deck &, Table &) = 0;
 
     private:
-    int score_;
+    int oldScore_;
+    int currentScore_;
     std::vector<Card *> hand_;
+    std::vector<Card *> discard_;
     int id_;
     static int nextid;
 };

@@ -57,13 +57,13 @@ void Game::play()
     {
     for(int i = 0; i < players_.size(); i++)
     {
-        if(players_.at(i)->score() < lowestScore)
+        if(players_.at(i)->currentScore() < lowestScore)
         {
-            lowestScore = players_.at(i)->score();
+            lowestScore = players_.at(i)->currentScore();
             lowestOwner = i + 1;
         }
 
-        if(players_.at(i)->score() >= 80)
+        if(players_.at(i)->currentScore() >= 80)
         {
             gameOver = true;
         }
@@ -132,4 +132,18 @@ void Game::playRound()
         }
         players_.at(turn)->turn(currentLegal, *deck_, currentTable);
     }
+    
+    for(int i = 0; i < 4; i++)
+    {
+		cout << "Player " << i + 1 << "’s discards:";
+		for(vector<Card *>::const_iterator it = players_.at(i)->discard().begin(); it != players_.at(i)->discard().end(); it++)
+		{
+			cout << " " << &it;
+		}
+		players_.at(i)->resetDiscard();
+		cout << endl << "Player " << i + 1 << "’s score: " << players_.at(i)->oldScore() << " + " << players_.at(i)->currentScore() - players_.at(i)->oldScore() << " = " << players_.at(i)->currentScore() << endl;
+		players_.at(i)->setOldScore(players_.at(i)->currentScore());
+		
+	}
+    
 }

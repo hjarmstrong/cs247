@@ -7,7 +7,7 @@ using namespace std;
 
 int Player::nextid = 1;
 
-Player::Player() : score_(0), id_(nextid++) {}
+Player::Player() : oldScore_(0), currentScore_(0), id_(nextid++) {}
 
 void Player::deal(vector<Card *> &cards)
 {
@@ -24,6 +24,16 @@ void Player::deal(vector<Card *> &cards)
     }
 }
 
+void Player::resetDiscard()
+{
+	discard_.clear();
+}
+
+void Player::setOldScore(int score)
+{
+	oldScore_ = score;
+}
+
 void Player::play(Card c)
 {
     for(vector<Card *>::iterator it = hand_.begin(); it != hand_.end(); it++)
@@ -38,15 +48,21 @@ void Player::play(Card c)
     assert(false);
 }
 
-void Player::discard(Card c)
+void Player::discardCard(Card c)
 {
+	discard_.push_back(&c);
     play(c);
-    score_ += static_cast<int>( c.getRank() ) + 1;
+    currentScore_ += static_cast<int>( c.getRank() ) + 1;
 }
 
-int Player::score() const
+int Player::oldScore() const
 {
-    return score_;
+    return oldScore_;
+}
+
+int Player::currentScore() const
+{
+    return currentScore_;
 }
 
 int Player::id() const
@@ -65,5 +81,10 @@ Player::~Player()
 const vector<Card *> &Player::hand() const
 {
     return hand_;
+}
+
+const vector<Card *> &Player::discard() const
+{
+    return discard_;
 }
 

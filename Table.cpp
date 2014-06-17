@@ -57,7 +57,7 @@ set<Card> Table::legalMoves()
         ret.insert(Card(static_cast<Suit>(i), SEVEN)); 
     }
 
-    //We start at 1 because we don't care about 0
+    //We start at 1 because we don't care about -1
     for(int i = 1; i < static_cast<int>(RANK_COUNT - 1); i++)
     {
         if(spades_[i] == true)
@@ -119,33 +119,30 @@ set<Card> Table::legalMoves()
 
 std::ostream &operator<<(std::ostream &sout, const Table &t)
 {
-	string ranks[13] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-	
-	
     sout << "Cards on the table:" << endl;
     sout << "Clubs:";
     for(int i = 0; i < 13; i++)
     {
         if(t.clubs_[i])
-            sout << " " << ranks[i];
+            sout << " " << i + 1;
     }
     sout << endl << "Diamonds:";
     for(int i = 0; i < 13; i++)
     {
         if(t.diamonds_[i])
-            sout << " " << ranks[i];
+            sout << " " << i + 1;
     }
     sout << endl << "Hearts:";
     for(int i = 0; i < 13; i++)
     {
         if(t.hearts_[i])
-            sout << " " << ranks[i];
+            sout << " " << i + 1;
     }
     sout << endl << "Spades:";
     for(int i = 0; i < 13; i++)
     {
         if(t.spades_[i])
-            sout << " " << ranks[i];
+            sout << " " << i + 1;
     }
 
     return sout;
