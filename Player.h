@@ -10,6 +10,9 @@ class Player
 {
     public:
     Player();
+
+    // Clone constructor, called when a new computerplay is created during ragequit
+    Player(int oldScore, int Score, std::vector<Card *> hand, std::vector<Card *> discard, int id);
     void deal(std::vector<Card *> &);
     virtual ~Player();
     int oldScore() const;

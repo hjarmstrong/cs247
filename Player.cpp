@@ -9,6 +9,9 @@ int Player::nextid = 1;
 
 Player::Player() : oldScore_(0), currentScore_(0), id_(nextid++) {}
 
+Player::Player(int oldScore, int Score, std::vector<Card *> hand, std::vector<Card *> discard, int id)
+: oldScore_(oldScore), currentScore_(Score), hand_(hand), discard_(discard), id_(id) {}
+
 void Player::deal(vector<Card *> &cards)
 {
     for(vector<Card *>::iterator it = hand_.begin(); it != hand_.end(); it++)

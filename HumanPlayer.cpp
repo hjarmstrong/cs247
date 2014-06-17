@@ -74,6 +74,7 @@ void HumanPlayer::turn(std::vector<Card> legal, Deck &deck, Table &table)
            }
            case RAGEQUIT:
            {
+               cout << "Player " << id() << " ragequits. A computer will now take over." << endl;
                //We throw an exception of the player number
                throw(id());
                break;

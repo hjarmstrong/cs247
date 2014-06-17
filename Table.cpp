@@ -28,7 +28,7 @@ void Table::playCard(Card e)
     if(e.getSuit() == HEART)
     {
         assert(hearts_[e.getRank()] == false);
-        spades_[e.getRank()] = true;
+        hearts_[e.getRank()] = true;
     }
     if(e.getSuit() == CLUB)
     {

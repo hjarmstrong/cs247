@@ -50,11 +50,12 @@ const std::vector<Player *> &Game::players() const
 
 void Game::play()
 {
-    int lowestScore = numeric_limits<int>::max(), lowestOwner = -1;
     bool gameOver = false;
 
     while(gameOver == false)
     {
+        int lowestScore = numeric_limits<int>::max(), lowestOwner = -1;
+
     for(int i = 0; i < players_.size(); i++)
     {
         if(players_.at(i)->currentScore() < lowestScore)
@@ -114,7 +115,7 @@ void Game::playRound()
     }
 
     escape:
-    cout << "A new round begins. It's player " << playerTurn+1  << "'s turn to play." << endl;
+    cout << "A new round begins. It's player " << playerTurn + 1  << "'s turn to play." << endl;
     Table currentTable;
     for(int i = 0; i < 52; i++)
     {
@@ -136,7 +137,14 @@ void Game::playRound()
         }
         catch(int player)
         {
-            int id = players_.at(player)->id();
+            int id = players_.at(player - 1)->id();
+            int Score = players_.at(player - 1)->currentScore();
+            int oldScore = players_.at(player - 1)->oldScore();
+        
+            Player *computer = new ComputerPlayer(oldScore, Score, players_.at(player - 1)->hand(), players_.at(player - 1)->discard(), id);
+            delete players_.at(player - 1);
+            players_.at(player - 1) = computer;
+            computer->turn(currentLegal, *deck_, currentTable);
         }
     }
     
