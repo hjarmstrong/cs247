@@ -52,16 +52,13 @@ ostream &operator<<(ostream &sout, const Deck &d)
     int line = 0;
     for(vector<Card *>::const_iterator it = d.cards_.begin(); it != d.cards_.end(); it++)
     {
-        sout << **it << " "; 
-        if(line < 13)
+        if(line > 12)
         {
-            line++;
-        }
-        else
-        {
-            sout << endl;
+			sout << endl;
             line = 0;
-        }
+		}
+			sout << **it << " "; 
+            line++;
     }
     return sout;
 }

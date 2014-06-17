@@ -21,7 +21,7 @@ bool operator==(const Card &a, const Card &b){
 }
 
 //Used for the std::set. If I could use boost or c++11 
-// I would use an unorded set, but this is th ebest I can do.
+// I would use an unorded set, but this is the best I can do.
 bool operator<(const Card &a, const Card &b)
 {
     if(a.getSuit() <  b.getSuit()) 
