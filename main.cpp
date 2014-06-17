@@ -13,9 +13,11 @@ int main (int argc, char *argv[])
         string argsrand = argv[1];
         istringstream args(argsrand);
         args >> rand;
-        srand48(rand);
     }
     
+   srand48(rand);
+
+
     Game theGame;
     try
     {
