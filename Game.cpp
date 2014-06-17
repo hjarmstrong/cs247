@@ -130,18 +130,25 @@ void Game::playRound()
                 currentLegal.push_back(*players_.at(turn)->hand().at(k));
             }
         }
-        players_.at(turn)->turn(currentLegal, *deck_, currentTable);
+        try
+        {
+            players_.at(turn)->turn(currentLegal, *deck_, currentTable);
+        }
+        catch(int player)
+        {
+            int id = players_.at(player)->id();
+        }
     }
     
     for(int i = 0; i < 4; i++)
     {
-		cout << "Player " << i + 1 << "’s discards:";
+		cout << "Player " << i + 1 << "'s discards:";
 		for(vector<Card *>::const_iterator it = players_.at(i)->discard().begin(); it != players_.at(i)->discard().end(); it++)
 		{
 			cout << " " << &it;
 		}
 		players_.at(i)->resetDiscard();
-		cout << endl << "Player " << i + 1 << "’s score: " << players_.at(i)->oldScore() << " + " << players_.at(i)->currentScore() - players_.at(i)->oldScore() << " = " << players_.at(i)->currentScore() << endl;
+		cout << endl << "Player " << i + 1 << "'s score: " << players_.at(i)->oldScore() << " + " << players_.at(i)->currentScore() - players_.at(i)->oldScore() << " = " << players_.at(i)->currentScore() << endl;
 		players_.at(i)->setOldScore(players_.at(i)->currentScore());
 		
 	}
