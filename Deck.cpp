@@ -29,7 +29,7 @@ Deck::~Deck()
     }
 }
 
-const std::vector<Card *> &deckList()
+const vector<Card *> &Deck::deckList()
 {
     return cards_;
 }
@@ -67,7 +67,3 @@ ostream &operator<<(ostream &sout, const Deck &d)
     return sout;
 }
 
-const std::vector<Card *> &deckList()
-{
-    return cards_; 
-}
