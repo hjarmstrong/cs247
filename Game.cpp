@@ -15,7 +15,7 @@ Game::Game() : deck_(new Deck)
 {
     string input;
 
-    for(int i = 0; i < 4; i++)
+    for(int i = 1; i <= 4; i++)
     {
         cout << "Is player " << i << " a human(h) or a computer(c)?" << endl << ">";
         cin >> input;
@@ -60,7 +60,7 @@ void Game::play()
         if(players_.at(i)->score() < lowestScore)
         {
             lowestScore = players_.at(i)->score();
-            lowestOwner = i;
+            lowestOwner = i + 1;
         }
 
         if(players_.at(i)->score() >= 80)
@@ -114,7 +114,7 @@ void Game::playRound()
     }
 
     escape:
-    cout << "A new round begins. It's player " << playerTurn  << "'s turn to play." << endl;
+    cout << "A new round begins. It's player " << playerTurn+1  << "'s turn to play." << endl;
     Table currentTable;
     for(int i = 0; i < 52; i++)
     {

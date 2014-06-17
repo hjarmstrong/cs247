@@ -17,7 +17,7 @@ class Deck
 
     private:
     std::vector<Card *> cards_;
-    int kCardCount;
+    static const int kCardCount = 52;
 
 };
 

@@ -22,23 +22,23 @@ void Table::playCard(Card e)
 {
     if(e.getSuit() == SPADE)
     {
-        assert(spades_[e.getRank() + 1] == false); 
-        spades_[e.getRank() + 1] = true;
+        assert(spades_[e.getRank()] == false); 
+        spades_[e.getRank()] = true;
     }
     if(e.getSuit() == HEART)
     {
-        assert(hearts_[e.getRank() + 1] == false); 
-        spades_[e.getRank() + 1] = true;
+        assert(hearts_[e.getRank()] == false); 
+        spades_[e.getRank()] = true;
     }
     if(e.getSuit() == CLUB)
     {
-        assert(clubs_[e.getRank() + 1] == false); 
-        clubs_[e.getRank() + 1] = true;
+        assert(clubs_[e.getRank()] == false); 
+        clubs_[e.getRank()] = true;
     }
     if(e.getSuit() == DIAMOND)
     {
-        assert(clubs_[e.getRank() + 1] == false); 
-        diamonds_[e.getRank() + 1] = true;
+        assert(diamonds_[e.getRank()] == false); 
+        diamonds_[e.getRank()] = true;
     }
 
 }
@@ -51,6 +51,12 @@ set<Card> Table::legalMoves()
         ret.insert(Card(SPADE, SEVEN));
         return ret; 
     }
+
+    for(int i = 0; i < static_cast<int>(SUIT_COUNT); i++)
+    {
+        ret.insert(Card(static_cast<Suit>(i), SEVEN)); 
+    }
+
     //We start at 1 because we don't care about -1
     for(int i = 1; i < static_cast<int>(RANK_COUNT - 1); i++)
     {
@@ -118,25 +124,25 @@ std::ostream &operator<<(std::ostream &sout, const Table &t)
     for(int i = 0; i < 13; i++)
     {
         if(t.clubs_[i])
-            sout << " " << i;
+            sout << " " << i + 1;
     }
     sout << endl << "Diamonds:";
     for(int i = 0; i < 13; i++)
     {
         if(t.diamonds_[i])
-            sout << " " << i;
+            sout << " " << i + 1;
     }
     sout << endl << "Hearts:";
     for(int i = 0; i < 13; i++)
     {
         if(t.hearts_[i])
-            sout << " " << i;
+            sout << " " << i + 1;
     }
     sout << endl << "Spades:";
     for(int i = 0; i < 13; i++)
     {
         if(t.spades_[i])
-            sout << " " << i;
+            sout << " " << i + 1;
     }
 
     return sout;

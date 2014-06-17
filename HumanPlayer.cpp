@@ -24,7 +24,7 @@ void HumanPlayer::turn(std::vector<Card> legal, Deck &deck, Table &table)
    }
    cout << endl;
 
-   while(!cin.fail())
+   while(!cin.eof())
    {
        Command op;
        cout << ">";
@@ -40,15 +40,17 @@ void HumanPlayer::turn(std::vector<Card> legal, Deck &deck, Table &table)
                     {
                         cout << "Player " << id() << " plays " << op.card << "." << endl;
                         play(op.card);
+                        table.playCard(op.card);
                         return;
                     }
                 }
                 
-                cout << "This is not a legal play." << endl;   
+                cout << "This is not a legal play." << endl;
+                break;
            }
            case DISCARD:
            {
-               if(legal.empty())
+               if(!legal.empty())
                {
                    cout << "You have a legal play. You may not discard." << endl;
                }
@@ -58,23 +60,28 @@ void HumanPlayer::turn(std::vector<Card> legal, Deck &deck, Table &table)
                    discard(op.card);
                    return;
                }
+               break;
            }
            case DECK:
            {
                cout << deck << endl; 
+               break;
            }
            case QUIT:
            {
                throw("Exiting to the main Function");
+               break;
            }
            case RAGEQUIT:
            {
                //We throw an exception of the player number
                throw(id());
+               break;
            }
            case BAD_COMMAND:
            {
                assert(false);
+               break;
            }
        }
    }

@@ -6,7 +6,6 @@
 
 using namespace std;
 
-int kCardCount = 52;
 vector<Card *> cards_;
 
 Deck::Deck()
@@ -53,7 +52,7 @@ ostream &operator<<(ostream &sout, const Deck &d)
     int line = 0;
     for(vector<Card *>::const_iterator it = d.cards_.begin(); it != d.cards_.end(); it++)
     {
-        sout << **it;
+        sout << **it << " "; 
         if(line < 13)
         {
             line++;
