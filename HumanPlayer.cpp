@@ -10,14 +10,14 @@ HumanPlayer::HumanPlayer() : Player() {}
 void HumanPlayer::turn(std::vector<Card> legal, Deck &deck, Table &table)
 {
    cout << table << endl;
-   cout << "Your Hand:" << endl;
+   cout << "Your Hand:";
    for(unsigned int i = 0; i < hand().size(); i++)
    {
        cout << " " << *hand().at(i);
    }
    cout << endl;
 
-   cout << "Legal Plays:" << endl;
+   cout << "Legal Plays:";
    for(unsigned int i = 0; i < legal.size(); i++)
    {
        cout << " " << legal.at(i);
