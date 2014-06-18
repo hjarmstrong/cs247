@@ -12,14 +12,14 @@ class Player
     Player();
 
     // Clone constructor, called when a new computerplay is created during ragequit
-    Player(int oldScore, int Score, std::vector<Card *> hand, std::vector<Card *> discard, int id);
+    Player(int oldScore, int Score, std::vector<Card *> hand, std::vector<Card> discard, int id);
     void deal(std::vector<Card *> &);
     virtual ~Player();
     int oldScore() const;
     int currentScore() const;
     int id() const;
     const std::vector<Card *> &hand() const;
-    const std::vector<Card *> &discard() const;
+    const std::vector<Card> &discard() const;
     void resetDiscard();
     void setOldScore(int);
     void play(Card);
@@ -30,7 +30,7 @@ class Player
     int oldScore_;
     int currentScore_;
     std::vector<Card *> hand_;
-    std::vector<Card *> discard_;
+    std::vector<Card> discard_;
     int id_;
     static int nextid;
 };

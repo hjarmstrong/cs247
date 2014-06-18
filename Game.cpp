@@ -151,9 +151,9 @@ void Game::playRound()
     for(int i = 0; i < 4; i++)
     {
 		cout << "Player " << i + 1 << "'s discards:";
-		for(vector<Card *>::const_iterator it = players_.at(i)->discard().begin(); it != players_.at(i)->discard().end(); it++)
+		for(vector<Card>::const_iterator it = players_.at(i)->discard().begin(); it != players_.at(i)->discard().end(); it++)
 		{
-			cout << " " << &it;
+			cout << " " << *it;
 		}
 		players_.at(i)->resetDiscard();
 		cout << endl << "Player " << i + 1 << "'s score: " << players_.at(i)->oldScore() << " + " << players_.at(i)->currentScore() - players_.at(i)->oldScore() << " = " << players_.at(i)->currentScore() << endl;
