@@ -11,8 +11,10 @@ class Player
     public:
     Player();
 
-    // Clone constructor, called when a new computerplay is created during ragequit
+    // Clone constructor, called when a player switches types
     Player(int oldScore, int Score, std::vector<Card *> hand, std::vector<Card> discard, int id);
+
+    // This method stes the hand of a player, this should be called before they play their turn
     void deal(std::vector<Card *> &);
     virtual ~Player();
     int oldScore() const;
@@ -22,9 +24,14 @@ class Player
     const std::vector<Card> &discard() const;
     void resetDiscard();
     void setOldScore(int);
+    
+    // This method exicutes the turn of a player in a given card game
+    virtual void turn(std::vector<Card>, Deck *, Table &) = 0;
+
+    protected:
+     // Functions for manipulating the hand of a player during their turn
     void play(Card);
     void discardCard(Card);
-    virtual void turn(std::vector<Card>, Deck &, Table &) = 0;
 
     private:
     int oldScore_;

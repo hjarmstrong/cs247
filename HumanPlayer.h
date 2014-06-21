@@ -10,7 +10,7 @@ class HumanPlayer : public Player
 {
     public:
     HumanPlayer();
-    void turn(std::vector<Card>, Deck &, Table &);
+    void turn(std::vector<Card>, Deck *, Table &);
 };
 
 #endif

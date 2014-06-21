@@ -13,7 +13,6 @@ class Game
     ~Game();
     const std::vector<Player *> &players() const;
     void play();
-    void deck();
     void playRound();
 
     private:

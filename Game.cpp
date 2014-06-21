@@ -92,11 +92,6 @@ void Game::play()
     }
 }
 
-void Game::deck()
-{
-    cout << deck_;
-}
-
 void Game::playRound()
 {
     int playerTurn;
@@ -133,7 +128,7 @@ void Game::playRound()
         }
         try
         {
-            players_.at(turn)->turn(currentLegal, *deck_, currentTable);
+            players_.at(turn)->turn(currentLegal, deck_, currentTable);
         }
         catch(int player)
         {
@@ -144,7 +139,7 @@ void Game::playRound()
             Player *computer = new ComputerPlayer(oldScore, Score, players_.at(player - 1)->hand(), players_.at(player - 1)->discard(), id);
             delete players_.at(player - 1);
             players_.at(player - 1) = computer;
-            computer->turn(currentLegal, *deck_, currentTable);
+            computer->turn(currentLegal, deck_, currentTable);
         }
     }
     

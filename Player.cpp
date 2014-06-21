@@ -14,11 +14,6 @@ Player::Player(int oldScore, int Score, std::vector<Card *> hand, std::vector<Ca
 
 void Player::deal(vector<Card *> &cards)
 {
-    for(vector<Card *>::iterator it = hand_.begin(); it != hand_.end(); it++)
-    {
-        //delete *it;
-    }
-
     hand_.clear();
 
     for(vector<Card *>::iterator it = cards.begin(); it != cards.end(); it++)
@@ -43,7 +38,6 @@ void Player::play(Card c)
     {
         if(c == **it)
         {
-            //delete *it;
             hand_.erase(it);
             return;
         }
@@ -75,10 +69,6 @@ int Player::id() const
 
 Player::~Player()
 {
-    for(vector<Card *>::iterator it = hand_.begin(); it != hand_.end(); it++)
-    {
-        //delete *it;
-    }
 }
 
 const vector<Card *> &Player::hand() const

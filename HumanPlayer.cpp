@@ -7,7 +7,7 @@ using namespace std;
 
 HumanPlayer::HumanPlayer() : Player() {}
 
-void HumanPlayer::turn(std::vector<Card> legal, Deck &deck, Table &table)
+void HumanPlayer::turn(std::vector<Card> legal, Deck *deck, Table &table)
 {
    cout << table << endl;
    cout << "Your Hand:";
@@ -64,7 +64,7 @@ void HumanPlayer::turn(std::vector<Card> legal, Deck &deck, Table &table)
            }
            case DECK:
            {
-               cout << deck << endl; 
+               cout << *deck << endl; 
                break;
            }
            case QUIT:
