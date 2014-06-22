@@ -22,6 +22,8 @@ private:
 };
 
 bool operator==(const Card &, const Card &);
+
+//Comparison operator for ordered STL containers
 bool operator<(const Card &, const Card &);
 
 //output/input Card in the format <rank><suit>

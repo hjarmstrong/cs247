@@ -28,7 +28,7 @@ Deck::~Deck()
     }
 }
 
-const vector<Card *> &Deck::deckList()
+const vector<Card *> &Deck::deckList() const
 {
     return cards_;
 }

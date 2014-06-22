@@ -14,15 +14,21 @@ class Player
     // Clone constructor, called when a player switches types
     Player(int oldScore, int Score, std::vector<Card *> hand, std::vector<Card> discard, int id);
 
-    // This method stes the hand of a player, this should be called before they play their turn
+    // This method sets the hand of a player, this should be called before they play their turn
     void deal(std::vector<Card *> &);
     virtual ~Player();
+
+    // Accessors for player data.
     int oldScore() const;
     int currentScore() const;
     int id() const;
+
+    // Read only contains of pointers to relivant card lists
+    // These pointers are cleand up by deck and should not be delted
     const std::vector<Card *> &hand() const;
     const std::vector<Card> &discard() const;
-    void resetDiscard();
+
+    // Used to set the previous score at the end of evry turn
     void setOldScore(int);
     
     // This method exicutes the turn of a player in a given card game
@@ -41,5 +47,4 @@ class Player
     int id_;
     static int nextid;
 };
-
 #endif

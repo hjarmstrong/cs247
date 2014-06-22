@@ -43,11 +43,6 @@ Game::~Game()
     delete deck_;
 }
 
-const std::vector<Player *> &Game::players() const
-{
-    return players_;
-}
-
 void Game::play()
 {
     bool gameOver = false;
@@ -163,10 +158,8 @@ void Game::playRound()
 		{
 			cout << " " << *it;
 		}
-		players_.at(i)->resetDiscard();
 		cout << endl << "Player " << i + 1 << "'s score: " << players_.at(i)->oldScore() << " + " << players_.at(i)->currentScore() - players_.at(i)->oldScore() << " = " << players_.at(i)->currentScore() << endl;
-		players_.at(i)->setOldScore(players_.at(i)->currentScore());
-		
+		players_.at(i)->setOldScore(players_.at(i)->currentScore());		
 	}
     
 }

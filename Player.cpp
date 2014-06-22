@@ -15,16 +15,12 @@ Player::Player(int oldScore, int Score, std::vector<Card *> hand, std::vector<Ca
 void Player::deal(vector<Card *> &cards)
 {
     hand_.clear();
+    discard_.clear();
 
     for(vector<Card *>::iterator it = cards.begin(); it != cards.end(); it++)
     {
         hand_.push_back(*it);
     }
-}
-
-void Player::resetDiscard()
-{
-	discard_.clear();
 }
 
 void Player::setOldScore(int score)

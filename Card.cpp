@@ -20,8 +20,9 @@ bool operator==(const Card &a, const Card &b){
 	return a.getSuit() == b.getSuit() && a.getRank() == b.getRank();
 }
 
-//Used for the std::set. If I could use boost or c++11 
-// I would use an unorded set, but this is th ebest I can do.
+// Used for the std::set. If we could use boost or c++11 
+// I would use an unorded set. But since we only have C++03
+// We use a < as the comparison operator.
 bool operator<(const Card &a, const Card &b)
 {
     if(a.getSuit() <  b.getSuit()) 
