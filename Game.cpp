@@ -56,17 +56,18 @@ void Game::play()
     {
         int lowestScore = numeric_limits<int>::max();
         vector<int> lowestOwner;
+        lowestOwner.push_back(-1);
 
         for(int i = 0; i < players_.size(); i++)
         {
             if(players_.at(i)->currentScore() < lowestScore)
             {
                 lowestScore = players_.at(i)->currentScore();
-                lowestOwner.push_back(i + 1);
+                lowestOwner.at(0) = i + 1;
             }
             if(players_.at(i)->currentScore() == lowestScore)
             {
-                lowestOwner.push_back(i+1);
+                lowestOwner.push_back(i + 1);
             }
 
             if(players_.at(i)->currentScore() >= 80)
@@ -81,6 +82,10 @@ void Game::play()
                 cout << "Player " << *it << " wins!" << endl;
                 return;
             }
+        }
+        else
+        {
+            lowestOwner.clear();
         }
 
         deck_->shuffle();
