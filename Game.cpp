@@ -15,7 +15,7 @@ Game::Game() : deck_(new Deck)
 {
     string input;
 
-    for(int i = 1; i <= 4; i++)
+    for(int i = 1; i <= kNumPlayers; i++)
     {
         cout << "Is player " << i << " a human(h) or a computer(c)?" << endl << ">";
         cin >> input;
@@ -86,7 +86,7 @@ void Game::play()
         deck_->shuffle();
         vector<Card *> hand;
 
-        for(int k = 0; k < 4; k++)
+        for(int k = 0; k < kNumPlayers; k++)
         {
             for(int i = 0; i < 13; i++)
             {
@@ -151,7 +151,7 @@ void Game::playRound()
         }
     }
     
-    for(int i = 0; i < 4; i++)
+    for(int i = 0; i < kNumPlayers; i++)
     {
 		cout << "Player " << i + 1 << "'s discards:";
 		for(vector<Card>::const_iterator it = players_.at(i)->discard().begin(); it != players_.at(i)->discard().end(); it++)

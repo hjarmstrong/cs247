@@ -25,6 +25,7 @@ int main (int argc, char *argv[])
     }
     catch(const char *)
     {
+        // Recieved quit command
         return 0;
     }
     return 0;

@@ -26,6 +26,7 @@ class Game
 
     std::vector<Player *> players_;
     Deck *deck_;
+    static const int kNumPlayers = 4;
 };
 
 #endif
