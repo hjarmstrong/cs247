@@ -54,41 +54,49 @@ void Game::play()
 
     while(gameOver == false)
     {
-        int lowestScore = numeric_limits<int>::max(), lowestOwner = -1;
+        int lowestScore = numeric_limits<int>::max();
+        vector<int> lowestOwner;
 
-    for(int i = 0; i < players_.size(); i++)
-    {
-        if(players_.at(i)->currentScore() < lowestScore)
+        for(int i = 0; i < players_.size(); i++)
         {
-            lowestScore = players_.at(i)->currentScore();
-            lowestOwner = i + 1;
+            if(players_.at(i)->currentScore() < lowestScore)
+            {
+                lowestScore = players_.at(i)->currentScore();
+                lowestOwner.push_back(i + 1);
+            }
+            if(players_.at(i)->currentScore() == lowestScore)
+            {
+                lowestOwner.push_back(i+1);
+            }
+
+            if(players_.at(i)->currentScore() >= 80)
+            {
+                gameOver = true;
+            }
+        }
+        if(gameOver == true)
+        {
+            for(vector<int>::iterator it = lowestOwner.begin(); it != lowestOwner.end(); it++)
+            {
+                cout << "Player " << *it << " wins!" << endl;
+                return;
+            }
         }
 
-        if(players_.at(i)->currentScore() >= 80)
+        deck_->shuffle();
+        vector<Card *> hand;
+
+        for(int k = 0; k < 4; k++)
         {
-            gameOver = true;
+            for(int i = 0; i < 13; i++)
+            {
+                hand.push_back(deck_->deckList().at(i + 13*k));
+            }
+            players_.at(k)->deal(hand);
+            hand.clear();
         }
-    }
-    if(gameOver == true)
-    {
-        cout << "Player " << lowestOwner << " wins!" << endl;
-        return;
-    }
 
-    deck_->shuffle();
-    vector<Card *> hand;
-
-    for(int k = 0; k < 4; k++)
-    {
-        for(int i = 0; i < 13; i++)
-        {
-            hand.push_back(deck_->deckList().at(i + 13*k));
-        }
-        players_.at(k)->deal(hand);
-        hand.clear();
-    }
-
-    playRound();
+        playRound();
     }
 }
 
