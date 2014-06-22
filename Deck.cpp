@@ -63,7 +63,6 @@ ostream &operator<<(ostream &sout, const Deck &d)
             line = 0;
         }
     }
-    sout << endl;
     return sout;
 }
 
