@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="12.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>190</x>
+      <y>310</y>
+      <w>160</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Card
+--
+-suit_: Suit
+-rank_: Rank
+--
++Card(Suit, Rank): Card
++getSuit(): Suit
++getRank(): Rank
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>40</x>
+      <y>620</y>
+      <w>250</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>Command
+--
+-type: Type
+-card: Card
+--
+-Command() : type(BAD_COMMAND), 
+card(SPADE, ACE)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>300</x>
+      <y>580</y>
+      <w>190</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>Deck
+--
+-cards_: vector&lt;Card *&gt;
+-kCardCount: int = 52
+--
++Deck(): Deck
++~Deck()
++deckList() : vector&lt;Card *&gt;
++shuffle() : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>70</x>
+      <y>400</y>
+      <w>180</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+</panel_attributes>
+    <additional_attributes>160;30;160;100;30;100;30;220</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>510</x>
+      <y>580</y>
+      <w>170</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>Table
+--
+-spades_[13]: bool
+-hearts_[13]: bool
+-clubs_[13]: bool
+-diamonds_[13]: bool
+--
++Table(): Table
++playCard(Card c): void
++legalMoves(): set&lt;Card&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>890</x>
+      <y>110</y>
+      <w>330</w>
+      <h>370</h>
+    </coordinates>
+    <panel_attributes>/Player/
+--
+-oldScore_: int
+-currentScore_: int
+-hand_: vector&lt;Card *&gt;
+-discard_: vector&lt;Card&gt;
+-id_: int
+-nextid: int
+--
++Player(): Player
++Player(int oldScore, int Score, std::vector&lt;Card *&gt; 
+hand, std::vector&lt;Card&gt; discard, int id): Player
+~Player
++oldScore(): int
++currentScore(): int
++id(): int
++&amp;hand(): vector&lt;Card *&gt;
++&amp;discard(): vector&lt;Card&gt;
++resetDiscard(): void
++setOldScore(int): void
+/+turn(vector&lt;Card&gt;, Deck *, Table &amp;): void/
+#play(Card): void
+#discardCard(Card): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>760</x>
+      <y>580</y>
+      <w>200</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>Game
+--
+players_: vector&lt;Player *&gt;
+deck_: *Deck
+--
++Game(): Game
++~Game()
++&amp;players(): vector&lt;Player *&gt;
++play(): void
++playRound(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>360</x>
+      <y>690</y>
+      <w>530</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+m1=  1</panel_attributes>
+    <additional_attributes>30;30;30;90;510;90;510;40</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>820</x>
+      <y>450</y>
+      <w>150</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=  4</panel_attributes>
+    <additional_attributes>130;30;130;70;30;70;30;130</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>990</x>
+      <y>580</y>
+      <w>260</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>ComputerPlayer
+--
++ComputerPlayer(): ComputerPlayer
++ComputerPlayer(int oldScore, int Score, 
+vector&lt;Card *&gt; hand, vector&lt;Card&gt; 
+discard, int id): ComputerPlayer
++turn(vector&lt;Card&gt;, Deck *, 
+Table &amp;): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1260</x>
+      <y>580</y>
+      <w>260</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>HumanPlayer
+--
++HumanPlayer(): HumanPlayer
++turn(std::vector&lt;Card&gt;, Deck *, 
+Table &amp;): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1040</x>
+      <y>450</y>
+      <w>50</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;30;130</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1090</x>
+      <y>450</y>
+      <w>320</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;30;80;300;80;300;130</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>240</x>
+      <y>400</y>
+      <w>180</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+m1=   52
+</panel_attributes>
+    <additional_attributes>30;30;30;100;160;100;160;180</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>280</x>
+      <y>400</y>
+      <w>330</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;- 
+m1=      0..52
+</panel_attributes>
+    <additional_attributes>30;30;30;70;310;70;310;180</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>320</x>
+      <y>330</y>
+      <w>590</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+m1= 13</panel_attributes>
+    <additional_attributes>30;30;570;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>620</x>
+      <y>180</y>
+      <w>100</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>Main
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>640</x>
+      <y>180</y>
+      <w>190</w>
+      <h>420</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+m1=   1</panel_attributes>
+    <additional_attributes>170;400;170;240;30;240;30;30</additional_attributes>
+  </element>
+</diagram>
