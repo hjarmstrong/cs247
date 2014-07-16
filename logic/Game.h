@@ -3,6 +3,7 @@
 
 #include "Player.h"
 #include "Deck.h"
+#include "Table.h"
 
 #include <vector>
 
@@ -16,16 +17,28 @@ class Game
     // Cleans up deck and players on the heap
     ~Game();
 
-   // Plays the game
-   void play();
+    // Plays the game
+    void play();
+
+    void Game::score(stringstream); 
+
+    void playRound();
+
+    bool humanTurnNext() const;
+
+    Table *table();
+
 
     private:
 
     //Helper function for a round of the game
-    void playRound();
 
     std::vector<Player *> players_;
     Deck *deck_;
+    Table *currentTable;
+    bool gameOver;
+    int playerTurn;
+    int totalTurn;
     static const int kNumPlayers = 4;
 };
 

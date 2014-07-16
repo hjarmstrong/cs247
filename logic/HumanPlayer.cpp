@@ -7,7 +7,7 @@ using namespace std;
 
 HumanPlayer::HumanPlayer() : Player() {}
 
-void HumanPlayer::turn(std::vector<Card> legal, Deck *deck, Table &table)
+bool HumanPlayer::turn(std::vector<Card> legal, Deck *deck, Table &table, Command op)
 {
    cout << table << endl;
    cout << "Your Hand:";
@@ -24,11 +24,11 @@ void HumanPlayer::turn(std::vector<Card> legal, Deck *deck, Table &table)
    }
    cout << endl;
 
-   while(!cin.eof())
-   {
-       Command op;
+//   while(!cin.eof())
+//   {
+       //Command op;
        cout << ">";
-       cin >> op;
+       //cin >> op;
        assert(op.type != BAD_COMMAND);
        switch(op.type)
        {
@@ -41,24 +41,25 @@ void HumanPlayer::turn(std::vector<Card> legal, Deck *deck, Table &table)
                         cout << "Player " << id() << " plays " << op.card << "." << endl;
                         play(op.card);
                         table.playCard(op.card);
-                        return;
+                        return true;
                     }
                 }
                 
                 cout << "This is not a legal play." << endl;
-                break;
+                return false;
            }
            case DISCARD:
            {
                if(!legal.empty())
                {
                    cout << "You have a legal play. You may not discard." << endl;
+                   return false;
                }
                else
                {
                    cout << "Player " << id() << " discards " << op.card << "." << endl;
                    discardCard(op.card);
-                   return;
+                   return true;
                }
                break;
            }
@@ -85,6 +86,10 @@ void HumanPlayer::turn(std::vector<Card> legal, Deck *deck, Table &table)
                break;
            }
        }
-   }
+  // }
 }
 
+bool HumanPlayer::isHuman() const
+{
+    return true;
+}

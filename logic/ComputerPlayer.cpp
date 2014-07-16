@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "ComputerPlayer.h"
 #include "Card.h"
+#include "Command.h"
 #include <cassert>
 
 using namespace std;
@@ -10,7 +11,7 @@ ComputerPlayer::ComputerPlayer() : Player() {}
 ComputerPlayer::ComputerPlayer(int oldScore, int Score, std::vector<Card *> hand, std::vector<Card> discard, int id)
 : Player(oldScore, Score, hand, discard, id) {}
 
-void ComputerPlayer::turn(std::vector<Card> legal, Deck *, Table &table)
+void ComputerPlayer::turn(std::vector<Card> legal, Deck *, Table &table, Command op)
 {
     if(legal.empty())
     {
@@ -24,4 +25,9 @@ void ComputerPlayer::turn(std::vector<Card> legal, Deck *, Table &table)
         play(legal.at(0));
         table.playCard(legal.at(0));
     }
+}
+
+bool ComputerPlayer::isHuman() const
+{
+    return false;
 }

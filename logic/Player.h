@@ -5,6 +5,7 @@
 #include "Card.h"
 #include "Table.h"
 #include "Deck.h"
+#include "Command.h"
 
 class Player
 {
@@ -32,7 +33,8 @@ class Player
     void setOldScore(int);
     
     // This method exicutes the turn of a player in a given card game
-    virtual void turn(std::vector<Card>, Deck *, Table &) = 0;
+    virtual void turn(std::vector<Card>, Deck *, Table &, Command) = 0;
+    virtual bool isHuman() const = 0;
 
     protected:
      // Functions for manipulating the hand of a player during their turn

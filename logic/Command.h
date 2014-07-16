@@ -8,9 +8,9 @@ enum Type { PLAY, DISCARD, DECK, QUIT, RAGEQUIT, BAD_COMMAND };
 
 struct Command{
 	Type type;
-	Card card;
+	int index;
 	
-	Command() : type(BAD_COMMAND), card(SPADE, ACE) {}
+	Command() : type(BAD_COMMAND), index(-1) {}
 };
 
 std::istream &operator>>(std::istream &, Command &);

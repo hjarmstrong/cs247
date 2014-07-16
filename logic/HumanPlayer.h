@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Card.h"
 #include "Deck.h"
+#include "Command.h"
 #include <vector>
 
 class HumanPlayer : public Player
@@ -14,7 +15,9 @@ class HumanPlayer : public Player
     HumanPlayer();
 
     // Defines pure virtuial method from player
-    void turn(std::vector<Card>, Deck *, Table &);
+    void turn(std::vector<Card>, Deck *, Table &, Command op);
+
+    bool isHuman() const;
 };
 
 #endif
