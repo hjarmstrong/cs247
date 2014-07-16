@@ -1,0 +1,12 @@
+g++ -Wall -I../logic -O -g `pkg-config gtkmm-2.4 --cflags --libs`   -c -o otherworld.o otherworld.cc
+g++ -Wall -I../logic -O -g `pkg-config gtkmm-2.4 --cflags --libs`   -c -o driver.o driver.cc
+g++ DeckGUI.o otherworld.o driver.o -Wall -I../logic -O -g `pkg-config gtkmm-2.4 --cflags --libs` -o other
+DeckGUI.o: In function `DeckGUI::getCardImage(Card)':
+/u1/hjarmstrong/cs247/project/cs247/view/DeckGUI.cc:62: undefined reference to `Card::getRank() const'
+/u1/hjarmstrong/cs247/project/cs247/view/DeckGUI.cc:62: undefined reference to `Card::getSuit() const'
+otherworld.o: In function `OtherWorld::OtherWorld()':
+/u1/hjarmstrong/cs247/project/cs247/view/otherworld.cc:24: undefined reference to `Card::Card(Suit, Rank)'
+otherworld.o: In function `OtherWorld::OtherWorld()':
+/u1/hjarmstrong/cs247/project/cs247/view/otherworld.cc:24: undefined reference to `Card::Card(Suit, Rank)'
+collect2: error: ld returned 1 exit status
+make: *** [other] Error 1
