@@ -1,7 +1,7 @@
 CXX= g++
 #CXXFLAGS = -g `/opt/local/bin/pkg-config gtkmm-2.4 --cflags --libs`
 CXXFLAGS = -Wall -I../logic -O -g `pkg-config gtkmm-2.4 --cflags --libs`
-OBJS = DeckGUI.o otherworld.o driver.o
+OBJS = DeckGUI.o otherworld.o driver.o MyDialogBox.o
 EXEC = other
 
 $(EXEC): $(OBJS)

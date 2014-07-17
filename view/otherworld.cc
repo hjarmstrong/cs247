@@ -1,10 +1,14 @@
 #include "otherworld.h"
+#include "MyDialogBox.h"
 #include <Card.h>
 #include <gtkmm/window.h>
 #include <gtkmm/image.h>
 #include <gtkmm/box.h>
 #include <gtkmm/button.h>
 #include <gtkmm/frame.h>
+#include <vector>
+
+using namespace std;
 
 // Sets the horizontal box to have homogeneous spacing (all elements are of the same size), and to put 10 pixels
 // between each widget. Initializes the pixel buffer for the null place holder card, and the 10 of spades.
@@ -12,9 +16,9 @@
 // with an image in it.
 //
 // Since widgets cannot be shared, must use pixel buffers to share images.
-OtherWorld::OtherWorld() : vbox( true, 10 ) 
+OtherWorld::OtherWorld() : commandButtons(true, 10), scores( true, 10 ), vbox( true, 10) 
 {
-    for(int i = 0; i <= 8; i++)
+    for(int i = 0; i <= 7; i++)
     {
         Gtk::HBox *h = new Gtk::HBox(true, 10);
         hbox.push_back(h);
@@ -24,25 +28,62 @@ OtherWorld::OtherWorld() : vbox( true, 10 )
 	const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf     = deck.getCardImage( Card(SPADE, SEVEN) );
 	
 	// Sets the border width of the window.
+    set_title("Straights Card Game");
 	set_border_width( 10 );
 		
 	// Set the look of the frame.
-	frame.set_label( "Cards:" );
+	frame.set_label("Game Actions:");
 	frame.set_label_align( Gtk::ALIGN_CENTER, Gtk::ALIGN_TOP );
 	frame.set_shadow_type( Gtk::SHADOW_ETCHED_OUT );
 	
 	// Add the frame to the window. Windows can only hold one widget, same for frames.
-	add( frame );
+	add( vbox );
 	
-	// Add the horizontal box for laying out the images to the frame.
-	frame.add( vbox );
+	// Add the vertical box for laying out the images to the frame.
 
-    for (int i = 0; i <=8; i++)
+    for (int i = 0; i <= 7; i++)
     {
         vbox.add(*hbox.at(i));
     }
+
+    newGame.set_label("Start New Game");
+    newGame.signal_clicked().connect( sigc::mem_fun( *this, &OtherWorld::newGameAction ) );
+
+    rageQuit.set_label("RageQuit");
+    quitGame.set_label("End Current Game");
+    quit.set_label("Quit");
+
+    commandButtons.add(newGame);
+    commandButtons.add(rageQuit);
+    commandButtons.add(quitGame);
+
+    frame.add(commandButtons);
+
+    hbox.at(0)->add(frame);
 	
+    
+    currentTurn.set_label("It is Player 1's Turn to Play");
+    currentAction.set_label("You must discard");
+    hbox.at(5)->add(currentTurn);
+    hbox.at(5)->add(currentAction); 
 	// Initialize 4 empty cards and place them in the box.
+
+    scoreboard.set_label("Score Board");
+	scoreboard.set_label_align( Gtk::ALIGN_CENTER, Gtk::ALIGN_TOP );
+	scoreboard.set_shadow_type( Gtk::SHADOW_ETCHED_OUT );
+    scoreboard.add(scores);
+    
+    player1.set_label("Player 1 \n Score:  \n Discards");
+    player2.set_label("Player 2 \n Score:  \n Discards");  
+    player3.set_label("Player 3 \n Score:  \n Discards");
+    player4.set_label("Player 4 \n Score:  \n Discards");  
+    
+    scores.add(player1);
+    scores.add(player2);
+    scores.add(player3);
+    scores.add(player4);
+
+    hbox.at(7)->add(scoreboard);
 
     for (int i = 1; i <=4; i++) {
 	for (int j = 0; j < 13; j++ ) {
@@ -63,10 +104,21 @@ OtherWorld::OtherWorld() : vbox( true, 10 )
 	
 	// The final step is to display this newly created widget.
 	show_all();
-} // OtherWorld::OtherWorld
+}
 
-OtherWorld::~OtherWorld() {
+OtherWorld::~OtherWorld() 
+{
 	for (int i = 0; i < 4; i++ ) 
     for (int j = 0; j < 13; j++) 
         delete cards[i][j];
-} // OtherWorld::~OtherWorld()
+
+    for(vector<Gtk::HBox*>::iterator it = hbox.begin(); it != hbox.end(); it++)
+    {
+        delete *it;
+    }
+}
+
+void OtherWorld::newGameAction()
+{
+    MyDialogBox dialog( *this, "Set up Parameters:" );
+}
