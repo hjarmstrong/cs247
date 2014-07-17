@@ -20,8 +20,6 @@ Game::Game(bool humanPlayers[]) : deck_(new Deck), currentTable(NULL), gameOver(
 
     for(int i = 1; i <= kNumPlayers; i++)
     {
-        legalPlays.push_back()
-
         cout << "Is player " << i << " a human(h) or a computer(c)?" << endl << ">";
         //cin >> input;
 
@@ -138,12 +136,20 @@ void Game::score(stringstream events)
 
 void Game::playRound()
 {   
+    // A new round begins...
+
     for(int i = 0; i < players_.size(), i++)
     {
         playTurn(getNextAction(), stringstream events);
     }
 
     score(stringstream events) // FIX
+    if(gameOver ==  false)
+    {
+        playRound();
+    }
+
+    return 0;
 }
 
 void Game::playTurn(Command op, stringstream &events)
@@ -207,8 +213,8 @@ string getNextAction()
     {
         return "play";
     }
-    else
-        return "discard";
+    
+    return "discard";
 }
 
 bool Game::humanTurnNext() const
