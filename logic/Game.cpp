@@ -14,6 +14,8 @@ using namespace std;
 
 Game::Game(bool humanPlayers[]) : deck_(new Deck), currentTable(NULL), gameOver(false)
 {
+    legalPlays.push_back(new Card(SPADE,SEVEN));
+
     string input;
 
     for(int i = 1; i <= kNumPlayers; i++)
@@ -37,6 +39,11 @@ Game::Game(bool humanPlayers[]) : deck_(new Deck), currentTable(NULL), gameOver(
 Game::~Game()
 {
     for(vector<Player *>::iterator it = players_.begin(); it != players_.end(); it++)
+    {
+        delete *it;
+    }
+
+    for(vector<Card>::iterator it = legalPlays.begin(); it != legalPlays.end(); it++)
     {
         delete *it;
     }
@@ -102,8 +109,9 @@ void Game::score(stringstream events)
     {
         if(players_.at(i)->currentScore() < lowestScore)
         {
+            lowestOwner.clear();
             lowestScore = players_.at(i)->currentScore();
-            lowestOwner.at(0) = i + 1;
+            lowestOwner.push_back(i + 1);
         }
         if(players_.at(i)->currentScore() == lowestScore)
         {
@@ -126,33 +134,32 @@ void Game::score(stringstream events)
     }
 }
 
-vector<Card> *Game::playRound()
+void Game::playRound()
 {   
-    int turn = (totalTurn + playerTurn) % players_.size();
+    // A new round begins...
 
-    set<Card> legal = currentTable.legalMoves();       
-    vector<Card> *currentLegal = new vector<Card>;
-
-    for(int k = 0; k < players_.at(turn)->hand().size(); k++)
+    for(int i = 0; i < players_.size(), i++)
     {
-        if(legal.count(*players_.at(turn)->hand().at(k)) != 0)
-        {
-            currentLegal->push_back(*players_.at(turn)->hand().at(k));
-        }
+        playTurn(getNextAction(), stringstream events);
     }
-    return currentLegal;
+
+    score(stringstream events) // FIX
+    if(gameOver ==  false)
+    {
+        playRound();
+    }
+
+    return 0;
 }
 
 void Game::playTurn(Command op, stringstream &events)
 {
+    computeLegal();
+
     try
     {
-        vector<Card> *currentLegal = playRound();
-
-        if( players_.at(turn)->turn(*currentLegal, deck_, currentTable, op) )
+        if( players_.at(turn)->turn(legalPlays, deck_, currentTable, op) )
             totalTurn++;
-
-        delete currentLegal;
     }
     catch(int player)
     {
@@ -168,13 +175,55 @@ void Game::playTurn(Command op, stringstream &events)
     }
 }    
 
+void computeLegal()
+{
+    legalPlays.clear();
+
+    int turn = (totalTurn + playerTurn) % players_.size();
+
+    set<Card> legal = currentTable.legalMoves();       
+
+    for(int k = 0; k < players_.at(turn)->hand().size(); k++)
+    {
+        if(legal.count(*players_.at(turn)->hand().at(k)) != 0)
+        {
+            legalPlays->push_back(*players_.at(turn)->hand().at(k));
+        }
+    }
+}
+
+void computeLegal(int playerNumber)
+{
+    legalPlays.clear();
+
+    set<Card> legal = currentTable.legalMoves();       
+
+    for(int k = 0; k < players_.at(playerNumber)->hand().size(); k++)
+    {
+        if(legal.count(*players_.at(playerNumber)->hand().at(k)) != 0)
+        {
+            legalPlays->push_back(*players_.at(playerNumber)->hand().at(k));
+        }
+    }
+}
+
+string getNextAction()
+{
+    if(legalPlays.size() > 0)
+    {
+        return "play";
+    }
+    
+    return "discard";
+}
+
 bool Game::humanTurnNext() const
 {
     int turn = (totalTurn + playerTurn) % players_.size();
     return players_.at(turn)->isHuman();
 }
 
-string Game::currentPlayer() const
+string Game::currentPlayer() const // I dont know what this is supposed to do
 {
 }
 
