@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Deck.h"
 #include "Table.h"
+#include "Card.h"
 
 #include <vector>
 
@@ -24,6 +25,11 @@ class Game
 
     void playRound();
 
+    void computeLegal();
+    void computeLegal(int);
+
+    string getNextAction();
+
     bool humanTurnNext() const;
 
     Table *table();
@@ -34,6 +40,7 @@ class Game
     //Helper function for a round of the game
 
     std::vector<Player *> players_;
+    std::vector<Card> legalPlays;
     Deck *deck_;
     Table *currentTable;
     bool gameOver;
