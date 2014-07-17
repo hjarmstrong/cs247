@@ -1,4 +1,4 @@
-#include "otherworld.h"
+#include "View.h"
 #include "MyDialogBox.h"
 #include <Card.h>
 #include <gtkmm/window.h>
@@ -7,6 +7,7 @@
 #include <gtkmm/button.h>
 #include <gtkmm/frame.h>
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -16,7 +17,7 @@ using namespace std;
 // with an image in it.
 //
 // Since widgets cannot be shared, must use pixel buffers to share images.
-OtherWorld::OtherWorld() : commandButtons(true, 10), scores( true, 10 ), vbox( true, 10) 
+View::View() : commandButtons(true, 10), scores( true, 10 ), vbox( true, 10) 
 {
     for(int i = 0; i <= 7; i++)
     {
@@ -47,7 +48,7 @@ OtherWorld::OtherWorld() : commandButtons(true, 10), scores( true, 10 ), vbox( t
     }
 
     newGame.set_label("Start New Game");
-    newGame.signal_clicked().connect( sigc::mem_fun( *this, &OtherWorld::newGameAction ) );
+    newGame.signal_clicked().connect( sigc::mem_fun( *this, &View::newGameAction ) );
 
     rageQuit.set_label("RageQuit");
     quitGame.set_label("End Current Game");
@@ -101,12 +102,38 @@ OtherWorld::OtherWorld() : commandButtons(true, 10), scores( true, 10 ), vbox( t
 	// Add the button to the box.
     for(int i = 0; i < 13; i++)
 	    hbox.at(6)->add( button[i] );
-	
+
+    //Connecting signals
+    for(int i = 0; i < 13; i++)
+    {
+       button[i].signal_clicked().connect( sigc::bind<int>( sigc::mem_fun(*this, &View::cardButtonClicked), i) );
+	}
+
+
 	// The final step is to display this newly created widget.
 	show_all();
+
+//	model->subscribe(this);
+
 }
 
-OtherWorld::~OtherWorld() 
+void View::update() 
+{
+
+}
+
+void View::cardButtonClicked(int i)
+{
+    cout << i << endl;
+//  controller_->nextButtonClicked();
+}
+
+void View::quitButtonClicked() 
+{
+//  controller_->resetButtonClicked();
+}
+
+View::~View() 
 {
 	for (int i = 0; i < 4; i++ ) 
     for (int j = 0; j < 13; j++) 
@@ -118,7 +145,7 @@ OtherWorld::~OtherWorld()
     }
 }
 
-void OtherWorld::newGameAction()
+void View::newGameAction()
 {
     MyDialogBox dialog( *this, "Set up Parameters:" );
 }

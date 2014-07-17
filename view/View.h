@@ -7,19 +7,32 @@
 #include <gtkmm/frame.h>
 #include <gtkmm/label.h>
 #include <vector>
-
 #include "DeckGUI.h"
 
-class OtherWorld : public Gtk::Window {
-public:
-	OtherWorld();
-	virtual ~OtherWorld();
-	
-private:
-    //Signal Handelers
-    virtual void newGameAction();
+class Model;
+class Controller;
 
-	DeckGUI                         deck;             // Knows all of the card pixel buffers.
+class View : public Gtk::Window 
+{
+public:
+	View();
+	virtual ~View();
+    virtual void update();	// Observer Pattern: concrete update() method
+
+private:
+
+	// Observer Pattern: to access Model accessors without having to downcast subject
+	Model *model;
+	
+	// Strategy Pattern member (plus signal handlers)
+	Controller *controller;
+
+	// Signal handlers:
+    void newGameAction();
+    void cardButtonClicked(int);
+    void quitButtonClicked();
+	
+    DeckGUI                         deck;             // Knows all of the card pixel buffers.
 	
 	// Member widgets:
     Gtk::HBox                       commandButtons;
@@ -45,6 +58,6 @@ private:
 	std::vector<Gtk::HBox*>         hbox;             // Horizontal box for aligning widgets in the window.
     Gtk::VBox                       vbox;             // vertical box for all the controles
 	Gtk::Frame                      frame;            // Create a nice framed border for the box.
-}; // OtherWorld
+};
 
 #endif

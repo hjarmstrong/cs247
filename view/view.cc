@@ -1,15 +1,3 @@
-/*
- * MVC example of GTKmm program
- *
- * View class.  Is responsible for buttons (that user clicks) and for displaying
- * the top card of the deck.
- *
- *  Created by Jo Atlee on 06/07/09.
- *  Copyright 2009 UW. All rights reserved.
- *
- */
-
-
 #include "observer.h"
 #include "view.h"
 #include "controller.h"
