@@ -12,7 +12,7 @@
 
 using namespace std;
 
-Game::Game(bool humanPlayers[]) : deck_(new Deck), currentTable(NULL), gameOver(false)
+Game::Game(bool humanPlayers[]) : deck_(new Deck), currentTable(NULL), gameOver(false)  //This somehow needs to be passed a bool humanPlayers[] from main.
 {
     legalPlays.push_back(new Card(SPADE,SEVEN));
 
@@ -52,7 +52,7 @@ Game::~Game()
     delete currentTable;
 }
 
-void Game::play()
+void Game::play(stringstream &events)
 {
     deck_->shuffle();
     vector<Card *> hand;
@@ -87,7 +87,7 @@ void Game::play()
 
 }
 
-void Game::score(stringstream events)
+void Game::score(stringstream &events)
 {
     for(int i = 0; i < kNumPlayers; i++)
     {
@@ -134,26 +134,27 @@ void Game::score(stringstream events)
     }
 }
 
-void Game::playRound()
+void Game::playRound(stringstream &events)
 {   
     // A new round begins...
-
-    for(int i = 0; i < players_.size(), i++)
+    for(int i = 0; i < deck_->deckList().size(); i++)
     {
-        playTurn(getNextAction(), stringstream events);
+        playTurn(getNextAction(), events); //need to turn getNextAction() string into a Command.
     }
 
-    score(stringstream events) // FIX
+    score(events);
     if(gameOver ==  false)
     {
         playRound();
     }
 
-    return 0;
+    return;
 }
 
 void Game::playTurn(Command op, stringstream &events)
 {
+    int turn = (totalTurn + playerTurn) % players_.size();
+    
     computeLegal();
 
     try
@@ -175,11 +176,11 @@ void Game::playTurn(Command op, stringstream &events)
     }
 }    
 
-void computeLegal()
+void Game::computeLegal()
 {
-    legalPlays.clear();
-
     int turn = (totalTurn + playerTurn) % players_.size();
+
+    legalPlays.clear();
 
     set<Card> legal = currentTable.legalMoves();       
 
@@ -192,7 +193,7 @@ void computeLegal()
     }
 }
 
-void computeLegal(int playerNumber)
+void Game::computeLegal(int playerNumber)
 {
     legalPlays.clear();
 
@@ -207,7 +208,7 @@ void computeLegal(int playerNumber)
     }
 }
 
-string getNextAction()
+string Game::getNextAction()
 {
     if(legalPlays.size() > 0)
     {
@@ -223,7 +224,12 @@ bool Game::humanTurnNext() const
     return players_.at(turn)->isHuman();
 }
 
-string Game::currentPlayer() const // I dont know what this is supposed to do
+string Game::currentPlayer() const
 {
+    int turn = (totalTurn + playerTurn) % players_.size();
+    stringstream ss;
+    ss << turn;
+
+    return "Player " + ss.str();
 }
 

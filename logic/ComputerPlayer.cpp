@@ -11,7 +11,7 @@ ComputerPlayer::ComputerPlayer() : Player() {}
 ComputerPlayer::ComputerPlayer(int oldScore, int Score, std::vector<Card *> hand, std::vector<Card> discard, int id)
 : Player(oldScore, Score, hand, discard, id) {}
 
-void ComputerPlayer::turn(std::vector<Card> legal, Deck *, Table &table, Command op)
+bool ComputerPlayer::turn(std::vector<Card> legal, Deck *, Table &table, Command op)
 {
     if(legal.empty())
     {
@@ -25,6 +25,8 @@ void ComputerPlayer::turn(std::vector<Card> legal, Deck *, Table &table, Command
         play(legal.at(0));
         table.playCard(legal.at(0));
     }
+
+    return true;
 }
 
 bool ComputerPlayer::isHuman() const

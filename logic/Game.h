@@ -7,28 +7,31 @@
 #include "Card.h"
 
 #include <vector>
+#include <string>
+#include <sstream>
 
 class Game
 {
     public:
 
     // Constructor, builds a new game with 4 players asking if they are human or computer
-    Game();
+    Game();  // Will need to be Game(bool *);
 
     // Cleans up deck and players on the heap
     ~Game();
 
     // Plays the game
-    void play();
+    void play(std::stringstream &);
 
-    void Game::score(stringstream); 
+    void score(std::stringstream &); 
 
-    void playRound();
+    void playRound(std::stringstream &);
+    void playTurn(Command op, std::stringstream &events);
 
     void computeLegal();
     void computeLegal(int);
 
-    string getNextAction();
+    std::string getNextAction();
 
     bool humanTurnNext() const;
 

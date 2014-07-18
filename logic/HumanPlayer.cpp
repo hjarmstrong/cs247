@@ -87,6 +87,7 @@ bool HumanPlayer::turn(std::vector<Card> legal, Deck *deck, Table &table, Comman
            }
        }
   // }
+  return true;
 }
 
 bool HumanPlayer::isHuman() const

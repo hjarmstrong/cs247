@@ -18,10 +18,11 @@ int main (int argc, char *argv[])
    srand48(rand);
 
 
-    Game theGame;
+    Game theGame;  //Need to get human players here.
+    std::stringstream events;
     try
     {
-    theGame.play();
+    theGame.play(events);
     }
     catch(const char *)
     {

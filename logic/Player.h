@@ -32,8 +32,8 @@ class Player
     // Used to set the previous score at the end of evry turn
     void setOldScore(int);
     
-    // This method exicutes the turn of a player in a given card game
-    virtual void turn(std::vector<Card>, Deck *, Table &, Command) = 0;
+    // This method executes the turn of a player in a given card game
+    virtual bool turn(std::vector<Card>, Deck *, Table &, Command) = 0;
     virtual bool isHuman() const = 0;
 
     protected:
