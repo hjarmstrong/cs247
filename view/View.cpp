@@ -27,6 +27,10 @@ View::View() : commandButtons(true, 10), scores( true, 10 ), vbox( true, 10)
 		
 	const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();
 	const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf     = deck.getCardImage( Card(SPADE, SEVEN) );
+    
+    for(int i = 0; i < 4; i++)
+        for(int j = 0; j < 13; j++)
+            cards[i][j] = NULL;
 	
 	// Sets the border width of the window.
     set_title("Straights Card Game");
@@ -67,17 +71,17 @@ View::View() : commandButtons(true, 10), scores( true, 10 ), vbox( true, 10)
     currentAction.set_label("You must discard");
     hbox.at(5)->add(currentTurn);
     hbox.at(5)->add(currentAction); 
-	// Initialize 4 empty cards and place them in the box.
+	// Initialize 4 empty cardsIMG and place them in the box.
 
     scoreboard.set_label("Score Board");
 	scoreboard.set_label_align( Gtk::ALIGN_CENTER, Gtk::ALIGN_TOP );
 	scoreboard.set_shadow_type( Gtk::SHADOW_ETCHED_OUT );
     scoreboard.add(scores);
     
-    player1.set_label("Player 1 \n Score:  \n Discards");
-    player2.set_label("Player 2 \n Score:  \n Discards");  
-    player3.set_label("Player 3 \n Score:  \n Discards");
-    player4.set_label("Player 4 \n Score:  \n Discards");  
+    player1.set_label("Player 1 \n Score:  \n DiscardsIMG");
+    player2.set_label("Player 2 \n Score:  \n DiscardsIMG");  
+    player3.set_label("Player 3 \n Score:  \n DiscardsIMG");
+    player4.set_label("Player 4 \n Score:  \n DiscardsIMG");  
     
     scores.add(player1);
     scores.add(player2);
@@ -88,8 +92,8 @@ View::View() : commandButtons(true, 10), scores( true, 10 ), vbox( true, 10)
 
     for (int i = 1; i <=4; i++) {
 	for (int j = 0; j < 13; j++ ) {
-		cards[i-1][j] = new Gtk::Image( nullCardPixbuf );
-		hbox.at(i)->add( *cards[i-1][j] );
+		cardsIMG[i-1][j] = new Gtk::Image( nullCardPixbuf );
+		hbox.at(i)->add( *cardsIMG[i-1][j] );
 	} 
     }
 	
@@ -137,7 +141,7 @@ View::~View()
 {
 	for (int i = 0; i < 4; i++ ) 
     for (int j = 0; j < 13; j++) 
-        delete cards[i][j];
+        delete cardsIMG[i][j];
 
     for(vector<Gtk::HBox*>::iterator it = hbox.begin(); it != hbox.end(); it++)
     {

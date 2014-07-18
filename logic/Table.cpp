@@ -117,6 +117,77 @@ set<Card> Table::legalMoves()
     return ret;
 }
 
+std::vector<std::vector<Card *> > Table::playedCards() const
+{
+    std::vector<std::vector<Card *> > returnVector;
+    std::vector<Card *> suitVector;
+
+    for(int i = 0; i < 13; i++)
+    {
+        if(clubs_[i])
+        {
+            suitVector.push_back(new Card(CLUB, static_cast<Rank>(i)));
+        }
+        else
+        {
+            suitVector.push_back(NULL);
+        }
+
+    }
+
+    returnVector.push_back(suitVector);
+    suitVector.clear();
+
+    for(int i = 0; i < 13; i++)
+    {
+        if(diamonds_[i])
+        {
+            suitVector.push_back(new Card(DIAMOND, static_cast<Rank>(i)));
+        }
+        else
+        {
+            suitVector.push_back(NULL);
+        }
+
+    }
+
+    returnVector.push_back(suitVector);
+    suitVector.clear();
+
+    for(int i = 0; i < 13; i++)
+    {
+        if(hearts_[i])
+        {
+            suitVector.push_back(new Card(HEART, static_cast<Rank>(i)));
+        }
+        else
+        {
+            suitVector.push_back(NULL);
+        }
+
+    }
+
+    returnVector.push_back(suitVector);
+    suitVector.clear();
+
+    for(int i = 0; i < 13; i++)
+    {
+        if(spades_[i])
+        {
+            suitVector.push_back(new Card(SPADE, static_cast<Rank>(i)));
+        }
+        else
+        {
+            suitVector.push_back(NULL);
+        }
+
+    }
+
+    returnVector.push_back(suitVector);
+
+    return returnVector;
+}
+
 std::ostream &operator<<(std::ostream &sout, const Table &t)
 {
 string ranks[13] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};

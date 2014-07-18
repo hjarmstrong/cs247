@@ -52,7 +52,8 @@ private:
     Gtk::Label                      player4;
 
 
-	Gtk::Image                    * cards[4][13];          // Images to display.
+	Gtk::Image                    * cardsIMG[4][13];          // Images to display.
+    Card                          * cards[4][13];
 	Gtk::Image                    * hand[13];          // Images to display.
 	Gtk::Button                     button[13];           // Button that will hold card images.
 	std::vector<Gtk::HBox*>         hbox;             // Horizontal box for aligning widgets in the window.

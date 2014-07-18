@@ -7,18 +7,9 @@ using namespace std;
 
 int main (int argc, char *argv[])
 {
-    int rand = 0;
-    if(argc > 1)
-    {
-        string argsrand = argv[1];
-        istringstream args(argsrand);
-        args >> rand;
-    }
-    
-   srand48(rand);
 
-
-    Game theGame;  //Need to get human players here.
+    bool cxr[4] = {false, false, false, false};
+    Game theGame(cxr);  //Need to get human players here.
     std::stringstream events;
     try
     {

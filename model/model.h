@@ -7,6 +7,7 @@
 #include <Player.h>
 #include <Table.h>
 #include <sstream>
+#include <string>
 
 class Model : public Subject
 {
@@ -15,14 +16,14 @@ public:
     Model();
 
     // GUI event handelers
-    newgame(int seed);
-    quit(); // check with example.
-    ragequit();
-    select(int card);
+    void newGame(int seed, bool*);
+    void quit(); // check with example.
+    void ragequit();
+    void select(int card);
 
     // Data access for view
     
-    const std::vector<string> dialogMessages() const;
+    const std::vector<std::string> dialogMessages() const;
     const Table *currentTable() const;
     const std::vector<Card *> &hand() const;
     const std::string currentPlayer() const;
@@ -31,7 +32,7 @@ public:
 private:
     Game *currentGame;
     int round;
-    stringstream events;
+    std::stringstream events;
 };
 
 
