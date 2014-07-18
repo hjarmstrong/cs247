@@ -35,6 +35,8 @@ class Game
 
     bool humanTurnNext() const;
 
+    std::string currentPlayer() const;
+
     Table *table();
 
 

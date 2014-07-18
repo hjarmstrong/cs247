@@ -42,11 +42,6 @@ Game::~Game()
     {
         delete *it;
     }
-
-    for(vector<Card>::iterator it = legalPlays.begin(); it != legalPlays.end(); it++)
-    {
-        delete *it;
-    }
     
     delete deck_;
     delete currentTable;
@@ -145,7 +140,7 @@ void Game::playRound(stringstream &events)
     score(events);
     if(gameOver ==  false)
     {
-        playRound();
+        playRound(events);
     }
 
     return;
@@ -172,7 +167,7 @@ void Game::playTurn(Command op, stringstream &events)
         Player *computer = new ComputerPlayer(oldScore, Score, players_.at(player - 1)->hand(), players_.at(player - 1)->discard(), id);
         delete players_.at(player - 1);
         players_.at(player - 1) = computer;
-        computer->turn(currentLegal, deck_, currentTable, Command());
+        computer->turn(legalPlays, deck_, currentTable, Command());
     }
 }    
 
@@ -182,13 +177,13 @@ void Game::computeLegal()
 
     legalPlays.clear();
 
-    set<Card> legal = currentTable.legalMoves();       
+    set<Card> legal = currentTable->legalMoves();       
 
     for(int k = 0; k < players_.at(turn)->hand().size(); k++)
     {
         if(legal.count(*players_.at(turn)->hand().at(k)) != 0)
         {
-            legalPlays->push_back(*players_.at(turn)->hand().at(k));
+            legalPlays.push_back(*players_.at(turn)->hand().at(k));
         }
     }
 }
@@ -197,13 +192,13 @@ void Game::computeLegal(int playerNumber)
 {
     legalPlays.clear();
 
-    set<Card> legal = currentTable.legalMoves();       
+    set<Card> legal = currentTable->legalMoves();       
 
     for(int k = 0; k < players_.at(playerNumber)->hand().size(); k++)
     {
         if(legal.count(*players_.at(playerNumber)->hand().at(k)) != 0)
         {
-            legalPlays->push_back(*players_.at(playerNumber)->hand().at(k));
+            legalPlays.push_back(*players_.at(playerNumber)->hand().at(k));
         }
     }
 }
