@@ -30,10 +30,10 @@ public:
     // Accessors
     const Table *currentTable() const;
     const std::vector<Card *> &hand() const;
+    const std::vector<Card> legalCards() const;
     const std::string currentPlayer() const;
     const std::string currentAction() const;
-    int *currentScore() const;
-    int *currentDiscards() const;
+    std::string *currentScoreBoard() const;
     
 private:
     Game *currentGame;

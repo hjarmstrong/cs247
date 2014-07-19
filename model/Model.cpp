@@ -138,21 +138,24 @@ const std::string Model::currentAction() const
     return currentGame->getNextAction();
 }
 
-int *Model::currentScore() const
+string *Model::currentScoreBoard() const
 {
-    int *ret = new int[4];
+    string *ret = new string[4];
     for(int i = 0; i < 4; i++)
     {
-        ret[i] = currentGame->players().at(i)->currentScore();
+        int discardInt = currentGame->players().at(i)->discard().size();
+        int scoreInt = currentGame->players().at(i)->oldScore();
+
+        stringstream ss;
+        ss << "Player "<< i + 1 <<" \n Score: " << scoreInt << "\n Discards: " << discardInt;
+
+        ret[i] = ss.str();
+
     } 
+    return ret;
 }
 
-int *Model::currentDiscards() const 
+const vector<Card> Model::legalCards() const
 {
-    int *ret = new int[4];
-    for(int i = 0; i < 4; i++)
-    {
-        ret[i] = currentGame->players().at(i)->discard().size();
-    }
+    return currentGame->legalMoves();
 }
-

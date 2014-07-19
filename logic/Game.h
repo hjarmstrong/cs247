@@ -30,6 +30,8 @@ class Game
     void computeLegal();
     void computeLegal(int);
 
+    const std::vector<Card> legalMoves() const;
+
     std::string getNextAction();
 
     bool humanTurnNext() const;

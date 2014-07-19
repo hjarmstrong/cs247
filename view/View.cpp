@@ -8,8 +8,10 @@
 #include <gtkmm/button.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/main.h>
+#include <gtkmm/messagedialog.h>
 #include <vector>
 #include <iostream>
+#include <cstdio>
 
 using namespace std;
 
@@ -131,6 +133,11 @@ void View::update()
        currentTurn.set_label("There is no Game in Progress");
        currentAction.set_label("Press New Game to start a new Game");
 
+       player1.set_label("Player 1 \n Score:  \n Discards:");
+       player2.set_label("Player 2 \n Score:  \n Discards:");  
+       player3.set_label("Player 3 \n Score:  \n Discards:");
+       player4.set_label("Player 4 \n Score:  \n Discards:");  
+
        for(int i = 0; i < 13; i++)
        {
            Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getNullCardImage();
@@ -192,16 +199,43 @@ void View::update()
             }
         }
     }
-    //Extra, get legal moves grey out buttons
-
+    
+    // Disables buttons which produce legal moves
+    if(model->currentAction() == "play")
+    {
+        const vector<Card> validMoves = model->legalCards();
+        for(int i = 0; i < 13; i++)
+        {
+            if(cardReferences[i] != NULL)
+                if(find(validMoves.begin(), validMoves.end(), *cardReferences[i]) == validMoves.end())
+                    button[i].set_sensitive(false);
+        }
+    }
     currentTurn.set_label(string("It is Player ") + model->currentPlayer() + string("'s Turn to Play"));
     currentAction.set_label(string("You must ") + model->currentAction() + string(" a card."));
+
+    string *scores = model->currentScoreBoard();
+
+    player1.set_label(scores[0]);
+    player2.set_label(scores[1]);  
+    player3.set_label(scores[2]);
+    player4.set_label(scores[3]); 
+    
+    delete []scores; 
 
 
     }
 
+   vector<string> popUps = model->dialogMessages();
+   for(vector<string>::iterator it = popUps.begin(); it != popUps.end(); it++)
+   {
+       if(*it == "")
+           continue;
 
-    // Display Dialog boxes.
+        Gtk::MessageDialog popUp(*it, false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
+        popUp.set_title("Game Event!");
+        popUp.run();
+   }
 }
 
 void View::cardButtonClicked(int i)

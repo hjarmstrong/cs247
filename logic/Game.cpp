@@ -79,6 +79,7 @@ void Game::play(stringstream &events)
 
     escape:
     events << "A new round begins. It's player " << playerTurn + 1  << "'s turn to play." << endl;
+    cout << "A new round begins. It's player " << playerTurn + 1  << "'s turn to play." << endl;
     currentTable = new Table;
     totalTurn = 0;
     roundOver_ = false;
@@ -89,12 +90,13 @@ void Game::score(stringstream &events)
 {
     for(int i = 0; i < kNumPlayers; i++)
     {
-		cout << "Player " << i + 1 << "'s discards:";
+		events << "Player " << i + 1 << "'s discards:";
 		for(vector<Card>::const_iterator it = players_.at(i)->discard().begin(); it != players_.at(i)->discard().end(); it++)
 		{
-			cout << " " << *it;
+			events << " " << *it;
 		}
-		cout << endl << "Player " << i + 1 << "'s score: " << players_.at(i)->oldScore() << " + " << players_.at(i)->currentScore() - players_.at(i)->oldScore() << " = " << players_.at(i)->currentScore() << endl;
+
+		events << endl << "Player " << i + 1 << "'s score: " << players_.at(i)->oldScore() << " + " << players_.at(i)->currentScore() - players_.at(i)->oldScore() << " = " << players_.at(i)->currentScore() << endl;
 		players_.at(i)->setOldScore(players_.at(i)->currentScore());
 	}
     
@@ -126,7 +128,7 @@ void Game::score(stringstream &events)
     {
         for(vector<int>::iterator it = lowestOwner.begin(); it != lowestOwner.end(); it++)
         {
-            cout << "Player " << *it << " wins!" << endl;
+            events << "Player " << *it << " wins!" << endl;
             return;
         }
     }
@@ -241,4 +243,9 @@ int Game::turn() const
 const vector<Player *> &Game::players() const
 {
     return players_;
+}
+
+const vector<Card> Game::legalMoves() const
+{
+    return legalPlays;
 }
