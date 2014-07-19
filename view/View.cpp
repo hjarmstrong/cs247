@@ -26,7 +26,6 @@ View::View() : commandButtons(true, 10), scores( true, 10 ), vbox( true, 10)
     }
 		
 	const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();
-	const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf     = deck.getCardImage( Card(SPADE, SEVEN) );
 	
 	// Sets the border width of the window.
     set_title("Straights Card Game");
@@ -74,10 +73,10 @@ View::View() : commandButtons(true, 10), scores( true, 10 ), vbox( true, 10)
 	scoreboard.set_shadow_type( Gtk::SHADOW_ETCHED_OUT );
     scoreboard.add(scores);
     
-    player1.set_label("Player 1 \n Score:  \n Discards");
-    player2.set_label("Player 2 \n Score:  \n Discards");  
-    player3.set_label("Player 3 \n Score:  \n Discards");
-    player4.set_label("Player 4 \n Score:  \n Discards");  
+    player1.set_label("Player 1 \n Score:  \n Discards:");
+    player2.set_label("Player 2 \n Score:  \n Discards:");  
+    player3.set_label("Player 3 \n Score:  \n Discards:");
+    player4.set_label("Player 4 \n Score:  \n Discards:");  
     
     scores.add(player1);
     scores.add(player2);
@@ -86,11 +85,15 @@ View::View() : commandButtons(true, 10), scores( true, 10 ), vbox( true, 10)
 
     hbox.at(7)->add(scoreboard);
 
-    for (int i = 1; i <=4; i++) {
-	for (int j = 0; j < 13; j++ ) {
-		cardsIMG[i-1][j] = new Gtk::Image( nullCardPixbuf );
-		hbox.at(i)->add( *cardsIMG[i-1][j] );
-	} 
+    // The board starts with no cards on it.
+   	const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getCardImage( Card(SPADE, SEVEN) );
+    for (int i = 1; i <=4; i++) 
+    {
+	    for (int j = 0; j < 13; j++ ) 
+        {
+		    cardsIMG[i-1][j] = new Gtk::Image( nullCardPixbuf );
+		    hbox.at(i)->add( *cardsIMG[i-1][j] );
+	    } 
     }
 	
 	for(int i = 0; i < 13; i++)
@@ -119,7 +122,13 @@ View::View() : commandButtons(true, 10), scores( true, 10 ), vbox( true, 10)
 
 void View::update() 
 {
+    //Update Tablw
 
+    //Update Hand
+
+    //Extra, get legal moves grey out buttons
+
+    //J girls are so cute :P
 }
 
 void View::cardButtonClicked(int i)
@@ -135,9 +144,9 @@ void View::quitButtonClicked()
 
 View::~View() 
 {
-	for (int i = 0; i < 4; i++ ) 
-    for (int j = 0; j < 13; j++) 
-        delete cards[i][j];
+    for(int i = 0; i < 4; i++)
+        for(int j = 0; j < 13; j++)
+            delete cardsIMG[i][j];
 
     for(vector<Gtk::HBox*>::iterator it = hbox.begin(); it != hbox.end(); it++)
     {

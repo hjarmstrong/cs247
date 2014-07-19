@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <sstream>
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -39,12 +40,12 @@ void Model::ragequit()
     notify();
 }
 
-void select (Card c)
+void Model::select(Card c)
 {
     Command com;
     com.card = c;
 
-    if( currentGame->getNextAction() == String("play") )
+    if( currentGame->getNextAction() == string("play") )
     {
         com.type = PLAY;
     }
@@ -58,12 +59,12 @@ void select (Card c)
     
     while ( !currentGame->humanTurnNext() && !currentGame->roundOver() )
     {
-        currentGame->playTurn(command(), events);
+        currentGame->playTurn(Command(), events);
     }
 
     if( currentGame->roundOver() )
     {
-        score(events);
+        currentGame->score(events);
         if( currentGame->gameOver() )
         {
             delete currentGame;
@@ -77,34 +78,34 @@ void select (Card c)
     notify();
 }
 
-const vector<string> Model::dialogMessages() const
+const vector<string> Model::dialogMessages()
 {
     string message;
     vector<string> messages;
     while( !events.eof() )
     {
-        getline(message, events);
+        getline(events, message);
         messages.push_back(message);
     }
-
+    return messages;
 }
 
-const Table *currentTable() const
+const Table *Model::currentTable() const
 {
     return currentGame->table();
 }
 
-const std::vector<Card *> &hand() const
+const std::vector<Card *> &Model::hand() const
 {
     return currentGame->currentPlayer()->hand();
 }
 
-const std::string currentPlayer() const
+const std::string Model::currentPlayer() const
 {
     return "player 7";
 }
 
-const std::string currentAction() const
+const std::string Model::currentAction() const
 {
     return currentGame->getNextAction();
 }

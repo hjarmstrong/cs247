@@ -19,11 +19,14 @@ public:
     void newGame(int seed, bool*);
     void quit(); // check with example.
     void ragequit();
-    void select(int card);
+    void select(Card);
 
     // Data access for view
     
-    const std::vector<std::string> dialogMessages() const;
+    // Flushes the dialog messages and returns them
+    const std::vector<std::string> dialogMessages();
+
+    // Accessors
     const Table *currentTable() const;
     const std::vector<Card *> &hand() const;
     const std::string currentPlayer() const;

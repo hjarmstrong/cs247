@@ -1,13 +1,15 @@
 CXX = g++
-CXXFLAGS = -Wall -g -I../logic -MMD
+CXXFLAGS = -Wall -g -fPIC -I../logic -MMD
+LDFLAGS = -shared
 OBJECTS = Subject.o Model.o 
 DEPENDS = ${OBJECTS:.o=.d}
-EXEC = model
+SO = model.so
 
-${EXEC} : ${OBJECTS}
-	${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC}
+all : ${SO}
+${SO} : ${OBJECTS}
+	${CXX} ${CXXFLAGS} ${OBJECTS} -o $@ $(LDFLAGS)
 
 clean :
-	rm -rf ${DEPENDS} ${OBJECTS} ${EXEC}
+	rm -rf ${DEPENDS} ${OBJECTS} ${SO}
 
 -include ${DEPENDS} # reads the .d files and reruns dependencies
