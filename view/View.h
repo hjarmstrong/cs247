@@ -8,11 +8,12 @@
 #include <gtkmm/label.h>
 #include <vector>
 #include "DeckGUI.h"
+#include <observer.h>
 
 class Model;
 class Controller;
 
-class View : public Gtk::Window 
+class View : public Gtk::Window , public Observer
 {
 public:
 	View();
@@ -53,6 +54,7 @@ private:
 
 
 	Gtk::Image                    * cardsIMG[4][13];          // Images to display.
+    Card                          * cardReferences[13];  
 	Gtk::Image                    * hand[13];          // Images to display.
 	Gtk::Button                     button[13];           // Button that will hold card images.
 	std::vector<Gtk::HBox*>         hbox;             // Horizontal box for aligning widgets in the window.

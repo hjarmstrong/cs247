@@ -1,15 +1,16 @@
 CXX= g++
 #CXXFLAGS = -g `/opt/local/bin/pkg-config gtkmm-2.4 --cflags --libs`
-CXXFLAGS = -Wall -I../logic -O -g `pkg-config gtkmm-2.4 --cflags --libs`
-OBJS = DeckGUI.o View.o driver.o MyDialogBox.o
-EXEC = other
+CXXFLAGS = -Wall -I../model -I../logic -O -g -fPIC -MMD `pkg-config gtkmm-2.4 --cflags --libs`
+LDFLAGS = -shared
+OBJS = DeckGUI.o View.o MyDialogBox.o
+DEPENDS = ${OBJS:.o=.d}
+SO = view.so
 
-$(EXEC): $(OBJS)
-	$(CXX) $(OBJS) ../logic/Card.o $(CXXFLAGS) -o $(EXEC)
+all : ${SO}
 
-DeckGUI.o: DeckGUI.h DeckGUI.cc
-View.o: View.h View.cpp
-driver.o: View.h driver.cc
+$(SO): $(OBJS)
+	$(CXX) $(OBJS) $(CXXFLAGS) -o $@ $(LDFLAGS)
 
 clean:
-	rm $(EXEC) $(OBJS)
+	rm ${DEPENDS} ${SO} $(OBJS)
+

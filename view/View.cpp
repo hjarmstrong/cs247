@@ -1,11 +1,13 @@
 #include "View.h"
 #include "MyDialogBox.h"
 #include <Card.h>
+#include <Model.h>
 #include <gtkmm/window.h>
 #include <gtkmm/image.h>
 #include <gtkmm/box.h>
 #include <gtkmm/button.h>
 #include <gtkmm/frame.h>
+#include <gtkmm/main.h>
 #include <vector>
 #include <iostream>
 
@@ -24,9 +26,7 @@ View::View() : commandButtons(true, 10), scores( true, 10 ), vbox( true, 10)
         Gtk::HBox *h = new Gtk::HBox(true, 10);
         hbox.push_back(h);
     }
-		
-	const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();
-	
+			
 	// Sets the border width of the window.
     set_title("Straights Card Game");
 	set_border_width( 10 );
@@ -86,7 +86,8 @@ View::View() : commandButtons(true, 10), scores( true, 10 ), vbox( true, 10)
     hbox.at(7)->add(scoreboard);
 
     // The board starts with no cards on it.
-   	const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getCardImage( Card(SPADE, SEVEN) );
+    const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();
+
     for (int i = 1; i <=4; i++) 
     {
 	    for (int j = 0; j < 13; j++ ) 
@@ -95,7 +96,10 @@ View::View() : commandButtons(true, 10), scores( true, 10 ), vbox( true, 10)
 		    hbox.at(i)->add( *cardsIMG[i-1][j] );
 	    } 
     }
-	
+
+    // We start with a theoretical hand of all 7s because it indicates that the player should start a new game.
+   	const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getCardImage( Card(SPADE, SEVEN) );
+
 	for(int i = 0; i < 13; i++)
     {
 	    hand[i] = new Gtk::Image( cardPixbuf );	
@@ -116,15 +120,43 @@ View::View() : commandButtons(true, 10), scores( true, 10 ), vbox( true, 10)
 	// The final step is to display this newly created widget.
 	show_all();
 
-//	model->subscribe(this);
+	model->subscribe(this);
 
 }
 
 void View::update() 
 {
-    //Update Tablw
+    //Update Table
+    vector<vector<Card *> > newCards = model->currentTable()->playedCards(); 
+    for(int i = 0;i < 4; i++)
+    {
+        for(int j = 0; j < 13; j++)
+        {
+            if(newCards.at(i).at(j) != NULL)
+            {
+   	            const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getCardImage( *newCards.at(i).at(j) );
+                cardsIMG[i][j]->set(cardPixbuf);
+            }
+        }
+    }
 
     //Update Hand
+   vector<Card *> newHand = model->hand();
+   for(int i = 0; i < 13; i++)
+   {
+        cardReferences[i] = newHand.at(i);
+        Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getNullCardImage();
+        button[i].set_sensitive(false);
+        if(cardReferences[i] != NULL)
+        {
+            cardPixbuf = deck.getCardImage( *cardReferences[i] );
+            button[i].set_sensitive(true);
+        }
+        hand[i]->set( cardPixbuf );
+        button[i].set_image ( *hand[i] );
+   }
+
+    // Display Dialog boxes.
 
     //Extra, get legal moves grey out buttons
 
@@ -134,12 +166,12 @@ void View::update()
 void View::cardButtonClicked(int i)
 {
     cout << i << endl;
-//  controller_->nextButtonClicked();
+    model->select(*cardReferences[i]);
 }
 
 void View::quitButtonClicked() 
 {
-//  controller_->resetButtonClicked();
+    Gtk::Main::quit();
 }
 
 View::~View() 
