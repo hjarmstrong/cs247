@@ -88,7 +88,7 @@ View::View() : commandButtons(true, 10), scores( true, 10 ), vbox( true, 10)
 
     for (int i = 1; i <=4; i++) {
 	for (int j = 0; j < 13; j++ ) {
-		cards[i-1][j] = new Gtk::Image( nullCardPixbuf );
+        cards[i-1][j] = new Gtk::Image( nullCardPixbuf  );
 		hbox.at(i)->add( *cards[i-1][j] );
 	} 
     }
@@ -119,7 +119,12 @@ View::View() : commandButtons(true, 10), scores( true, 10 ), vbox( true, 10)
 
 void View::update() 
 {
-
+    for (int i = 1; i <=4; i++) 
+    {
+        for (int j = 0; j < 13; j++ ) 
+        {
+        } 
+    }
 }
 
 void View::cardButtonClicked(int i)
