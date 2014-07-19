@@ -234,3 +234,8 @@ bool Game::roundOver()
 {
     return roundOver_;
 }
+
+Table *Game::table()
+{
+    return currentTable;
+}

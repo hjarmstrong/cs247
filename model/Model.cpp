@@ -8,6 +8,10 @@
 
 using namespace std;
 
+Model::Model() : currentGame(NULL)
+{
+}
+
 void Model::newGame(int seed, bool players[])
 {
     // It is safe to delete NULL

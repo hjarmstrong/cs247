@@ -3,7 +3,7 @@ CXXFLAGS = -Wall -g -fPIC -MMD
 LDFLAGS = -shared
 OBJECTS = Card.o Deck.o Command.o Player.o ComputerPlayer.o HumanPlayer.o Table.o Game.o
 DEPENDS = ${OBJECTS:.o=.d}
-SO = logic.so
+SO = liblogic.so
 
 all : ${SO}
 ${SO} : ${OBJECTS}

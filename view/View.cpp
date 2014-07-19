@@ -19,7 +19,7 @@ using namespace std;
 // with an image in it.
 //
 // Since widgets cannot be shared, must use pixel buffers to share images.
-View::View() : commandButtons(true, 10), scores( true, 10 ), vbox( true, 10) 
+View::View(Model *m) : model(m), commandButtons(true, 10), scores( true, 10 ), vbox( true, 10) 
 {
     for(int i = 0; i <= 7; i++)
     {

@@ -34,7 +34,6 @@ public:
     
 private:
     Game *currentGame;
-    int round;
     std::stringstream events;
 };
 

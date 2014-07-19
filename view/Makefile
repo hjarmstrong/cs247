@@ -4,7 +4,7 @@ CXXFLAGS = -Wall -I../model -I../logic -O -g -fPIC -MMD `pkg-config gtkmm-2.4 --
 LDFLAGS = -shared
 OBJS = DeckGUI.o View.o MyDialogBox.o
 DEPENDS = ${OBJS:.o=.d}
-SO = view.so
+SO = libview.so
 
 all : ${SO}
 
