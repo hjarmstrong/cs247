@@ -12,9 +12,9 @@
 
 using namespace std;
 
-Game::Game(bool humanPlayers[]) : deck_(new Deck), currentTable(NULL), gameOver(false)  //This somehow needs to be passed a bool humanPlayers[] from main.
+Game::Game(bool humanPlayers[]) : deck_(new Deck), currentTable(NULL), roundOver_(false), gameOver_(false)  //This somehow needs to be passed a bool humanPlayers[] from main.
 {
-    legalPlays.push_back(new Card(SPADE,SEVEN));
+    legalPlays.push_back(Card(SPADE,SEVEN));
 
     string input;
 
@@ -39,11 +39,6 @@ Game::Game(bool humanPlayers[]) : deck_(new Deck), currentTable(NULL), gameOver(
 Game::~Game()
 {
     for(vector<Player *>::iterator it = players_.begin(); it != players_.end(); it++)
-    {
-        delete *it;
-    }
-
-    for(vector<Card>::iterator it = legalPlays.begin(); it != legalPlays.end(); it++)
     {
         delete *it;
     }
@@ -84,6 +79,7 @@ void Game::play(stringstream &events)
     events << "A new round begins. It's player " << playerTurn + 1  << "'s turn to play." << endl;
     currentTable = new Table;
     totalTurn = 0;
+    roundOver_ = false;
 
 }
 
@@ -120,11 +116,11 @@ void Game::score(stringstream &events)
 
         if(players_.at(i)->currentScore() >= 80)
         {
-            gameOver = true;
+            gameOver_ = true;
         }
     }
 
-    if(gameOver == true)
+    if(gameOver_ == true)
     {
         for(vector<int>::iterator it = lowestOwner.begin(); it != lowestOwner.end(); it++)
         {
@@ -132,24 +128,12 @@ void Game::score(stringstream &events)
             return;
         }
     }
+    else
+    {
+        play(events);
+    }
 }
 
-void Game::playRound(stringstream &events)
-{   
-    // A new round begins...
-    for(int i = 0; i < deck_->deckList().size(); i++)
-    {
-        playTurn(getNextAction(), events); //need to turn getNextAction() string into a Command.
-    }
-
-    score(events);
-    if(gameOver ==  false)
-    {
-        playRound();
-    }
-
-    return;
-}
 
 void Game::playTurn(Command op, stringstream &events)
 {
@@ -172,23 +156,30 @@ void Game::playTurn(Command op, stringstream &events)
         Player *computer = new ComputerPlayer(oldScore, Score, players_.at(player - 1)->hand(), players_.at(player - 1)->discard(), id);
         delete players_.at(player - 1);
         players_.at(player - 1) = computer;
-        computer->turn(currentLegal, deck_, currentTable, Command());
+        computer->turn(legalPlays, deck_, currentTable, Command());
     }
+
+	computeLegal();
 }    
 
 void Game::computeLegal()
 {
     int turn = (totalTurn + playerTurn) % players_.size();
+    if(totalTurn == 52)
+    {
+        roundOver_ = true;
+        return;
+    }
 
     legalPlays.clear();
 
-    set<Card> legal = currentTable.legalMoves();       
+    set<Card> legal = currentTable->legalMoves();       
 
     for(int k = 0; k < players_.at(turn)->hand().size(); k++)
     {
         if(legal.count(*players_.at(turn)->hand().at(k)) != 0)
         {
-            legalPlays->push_back(*players_.at(turn)->hand().at(k));
+            legalPlays.push_back(*players_.at(turn)->hand().at(k));
         }
     }
 }
@@ -197,13 +188,13 @@ void Game::computeLegal(int playerNumber)
 {
     legalPlays.clear();
 
-    set<Card> legal = currentTable.legalMoves();       
+    set<Card> legal = currentTable->legalMoves();       
 
     for(int k = 0; k < players_.at(playerNumber)->hand().size(); k++)
     {
         if(legal.count(*players_.at(playerNumber)->hand().at(k)) != 0)
         {
-            legalPlays->push_back(*players_.at(playerNumber)->hand().at(k));
+            legalPlays.push_back(*players_.at(playerNumber)->hand().at(k));
         }
     }
 }
@@ -224,12 +215,22 @@ bool Game::humanTurnNext() const
     return players_.at(turn)->isHuman();
 }
 
-string Game::currentPlayer() const
+const Player * const Game::currentPlayer() const
 {
     int turn = (totalTurn + playerTurn) % players_.size();
-    stringstream ss;
-    ss << turn;
+//    stringstream ss;
+//    ss << turn;
+//    playerLabel = "Player " + ss.str();
 
-    return "Player " + ss.str();
+    return players_.at(turn);
 }
 
+bool Game::gameOver()
+{
+    return gameOver_;
+}
+
+bool Game::roundOver()
+{
+    return roundOver_;
+}

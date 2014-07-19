@@ -15,7 +15,7 @@ class Game
     public:
 
     // Constructor, builds a new game with 4 players asking if they are human or computer
-    Game();  // Will need to be Game(bool *);
+    Game(bool *);
 
     // Cleans up deck and players on the heap
     ~Game();
@@ -25,7 +25,6 @@ class Game
 
     void score(std::stringstream &); 
 
-    void playRound(std::stringstream &);
     void playTurn(Command op, std::stringstream &events);
 
     void computeLegal();
@@ -34,6 +33,11 @@ class Game
     std::string getNextAction();
 
     bool humanTurnNext() const;
+
+    const Player * const currentPlayer() const;
+
+    bool roundOver();
+    bool gameOver();
 
     Table *table();
 
@@ -46,7 +50,8 @@ class Game
     std::vector<Card> legalPlays;
     Deck *deck_;
     Table *currentTable;
-    bool gameOver;
+    bool roundOver_;
+    bool gameOver_;
     int playerTurn;
     int totalTurn;
     static const int kNumPlayers = 4;

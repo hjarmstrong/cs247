@@ -17,7 +17,7 @@ class ComputerPlayer : public Player
    ComputerPlayer(int oldScore, int Score, std::vector<Card *> hand, std::vector<Card> discard, int id);
 
    // Defines the pure virtuial method from player
-   bool turn(std::vector<Card>, Deck *, Table &, Command op);
+   bool turn(std::vector<Card>, Deck *, Table *, Command op);
    
    bool isHuman() const;
 };

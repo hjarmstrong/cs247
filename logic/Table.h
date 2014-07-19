@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <set>
+#include <vector>
 #include <functional>
 #include "Card.h"
 
@@ -20,11 +21,13 @@ class Table
     // Based on the cards on the table return a set of all the possible leagal moves
     std::set<Card> legalMoves();
 
+    std::vector<std::vector<Card *> > playedCards() const;
+
     private:
-    bool spades_[13];
-    bool hearts_[13];
     bool clubs_[13];
     bool diamonds_[13];
+    bool hearts_[13];
+    bool spades_[13];
 };
 
 // Prints out the cards on the table

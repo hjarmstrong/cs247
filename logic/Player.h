@@ -33,7 +33,7 @@ class Player
     void setOldScore(int);
     
     // This method executes the turn of a player in a given card game
-    virtual bool turn(std::vector<Card>, Deck *, Table &, Command) = 0;
+    virtual bool turn(std::vector<Card>, Deck *, Table *, Command) = 0;
     virtual bool isHuman() const = 0;
 
     protected:

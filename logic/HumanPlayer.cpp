@@ -7,9 +7,9 @@ using namespace std;
 
 HumanPlayer::HumanPlayer() : Player() {}
 
-bool HumanPlayer::turn(std::vector<Card> legal, Deck *deck, Table &table, Command op)
+bool HumanPlayer::turn(std::vector<Card> legal, Deck *deck, Table *table, Command op)
 {
-   cout << table << endl;
+   cout << *table << endl;
    cout << "Your Hand:";
    for(unsigned int i = 0; i < hand().size(); i++)
    {
@@ -40,7 +40,7 @@ bool HumanPlayer::turn(std::vector<Card> legal, Deck *deck, Table &table, Comman
                     {
                         cout << "Player " << id() << " plays " << op.card << "." << endl;
                         play(op.card);
-                        table.playCard(op.card);
+                        table->playCard(op.card);
                         return true;
                     }
                 }
