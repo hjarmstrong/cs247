@@ -5,10 +5,16 @@ OBJECTS = main.o
 DEPENDS = ${OBJECTS:.o=.d}
 EXE = straights_ui
 
-${EXE} : ${OBJECTS}
+all : ${EXE}
+
+liblogic.so :
 	make -C ./logic/
+libmodel.so :
 	make -C ./model/
+libview.so :
 	make -C ./view/
+
+${EXE} : ${OBJECTS} liblogic.so libmodel.so libview.so
 	${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXE} ${LDFLAGS}
 
 clean :

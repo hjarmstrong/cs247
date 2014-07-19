@@ -29,9 +29,11 @@ private:
 	Controller *controller;
 
 	// Signal handlers:
-    void newGameAction();
     void cardButtonClicked(int);
-    void quitButtonClicked();
+    void newGameAction();
+    void quitGameAction();
+    void rageQuitAction();
+    void endGameAction(); 
 	
     DeckGUI                         deck;             // Knows all of the card pixel buffers.
 	

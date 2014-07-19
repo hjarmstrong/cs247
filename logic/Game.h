@@ -36,8 +36,12 @@ class Game
 
     const Player * const currentPlayer() const;
 
+    const std::vector<Player *> &players() const;
+
     bool roundOver();
     bool gameOver();
+
+    int turn() const;
 
     Table *table();
 

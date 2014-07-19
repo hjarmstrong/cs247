@@ -16,31 +16,29 @@ void Model::newGame(int seed, bool players[])
 {
     // It is safe to delete NULL
     delete currentGame;
-
+    cout << "SEED VALUE" << endl;
+    cout << seed << endl;
     srand48(seed);
+
     currentGame = new Game(players);
     currentGame->play(events);
-    while( !currentGame->humanTurnNext() )
-    {
-        currentGame->playTurn(Command(), events);
-    }
+   
+    nextHuman();
+    
     notify();
 }
 
-
-
-//quit(); // check with example.
-
 void Model::ragequit()
 {
+    if( currentGame == NULL)
+        return;
+
     Command c;
     c.type = RAGEQUIT;
     currentGame->playTurn(c, events);
-   
-    while( !currentGame->humanTurnNext() )
-    {
-        currentGame->playTurn(Command(), events);
-    }
+    
+    nextHuman();
+
     notify();
 }
 
@@ -60,25 +58,40 @@ void Model::select(Card c)
     
     currentGame->playTurn(com, events);
 
-    
-    while ( !currentGame->humanTurnNext() && !currentGame->roundOver() )
-    {
-        currentGame->playTurn(Command(), events);
-    }
+    nextHuman();
+        
+    notify();
+}
 
-    if( currentGame->roundOver() )
-    {
-        currentGame->score(events);
-        if( currentGame->gameOver() )
+void Model::nextHuman()
+{
+    while ( !currentGame->humanTurnNext() || currentGame->roundOver() )
+    {   
+        if( currentGame->roundOver() )
         {
-            delete currentGame;
+            currentGame->score(events);
+            if( currentGame->gameOver() )
+            {
+                delete currentGame;
+                currentGame = NULL;
+                break;
+            }
+            else
+            {
+                currentGame->play(events);
+            }
         }
-        else
+        if( !currentGame->humanTurnNext() )
         {
-            currentGame->play(events);
+            currentGame->playTurn(Command(), events);
         }
     }
+}
 
+void Model::endGame()
+{
+    delete currentGame;
+    currentGame = NULL;
     notify();
 }
 
@@ -96,20 +109,50 @@ const vector<string> Model::dialogMessages()
 
 const Table *Model::currentTable() const
 {
-    return currentGame->table();
+    if(currentGame != NULL)
+        return currentGame->table();
+    
+    
+    return NULL;
+    
 }
 
 const std::vector<Card *> &Model::hand() const
 {
-    return currentGame->currentPlayer()->hand();
+    if(currentGame != NULL)
+        return currentGame->currentPlayer()->hand();
+
+    throw("No Game in Progress");
 }
 
 const std::string Model::currentPlayer() const
 {
-    return "player 7";
+    stringstream ss;
+    ss << "Player " << currentGame->turn() + 1;
+    string ret = ss.str();
+    return ret;
 }
 
 const std::string Model::currentAction() const
 {
     return currentGame->getNextAction();
 }
+
+int *Model::currentScore() const
+{
+    int *ret = new int[4];
+    for(int i = 0; i < 4; i++)
+    {
+        ret[i] = currentGame->players().at(i)->currentScore();
+    } 
+}
+
+int *Model::currentDiscards() const 
+{
+    int *ret = new int[4];
+    for(int i = 0; i < 4; i++)
+    {
+        ret[i] = currentGame->players().at(i)->discard().size();
+    }
+}
+

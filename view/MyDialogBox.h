@@ -23,7 +23,7 @@ using std::vector;
 class MyDialogBox : Gtk::Dialog {
 public:
 	// Specifies the parent window of the dialog box and the title of the dialog box.
-	MyDialogBox( Gtk::Window & parentWindow, string title);
+	MyDialogBox( Gtk::Window & parentWindow, string title, bool *&players, int &seedNumber);
 	virtual ~MyDialogBox();
 	
 private:

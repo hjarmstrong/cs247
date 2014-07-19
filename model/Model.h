@@ -17,9 +17,10 @@ public:
 
     // GUI event handelers
     void newGame(int seed, bool*);
-    void quit(); // check with example.
+    void endGame(); 
     void ragequit();
     void select(Card);
+    void nextHuman();
 
     // Data access for view
     
@@ -31,6 +32,8 @@ public:
     const std::vector<Card *> &hand() const;
     const std::string currentPlayer() const;
     const std::string currentAction() const;
+    int *currentScore() const;
+    int *currentDiscards() const;
     
 private:
     Game *currentGame;

@@ -9,12 +9,13 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/entry.h>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 using namespace std;
 
 // Specifies the parent window of the dialog box and the title of the dialog box.
-MyDialogBox::MyDialogBox( Gtk::Window & parentWindow, string title) : Dialog( title, parentWindow, true, true ) {
+MyDialogBox::MyDialogBox( Gtk::Window & parentWindow, string title, bool *&playerAI, int &seedNumber) : Dialog( title, parentWindow, true, true ) {
 	vector<string> messages;
 	messages.push_back( "Player 1 is a Human" );
 	messages.push_back( "Player 2 is a Human" );
@@ -39,23 +40,34 @@ MyDialogBox::MyDialogBox( Gtk::Window & parentWindow, string title) : Dialog( ti
 	show_all_children();
 	
     // Wait for a response from the dialog box.
-    bool *playerAI = new bool[4];
+    playerAI = new bool[4];
 	int result = run();
     switch (result) {
         case Gtk::RESPONSE_OK:
             for ( int i = 0; i < messages.size(); i++ ) {
-				playerAI[i] = buttons[i]->get_active(); 
+				    if(buttons[i]->get_active()){
+                        cout << " Button " << i << " is active " << endl;
+                        playerAI[i] = true;}
+                    else{
+                        cout << " button" << i << "is not ACTIVE" << endl;
+                        playerAI[i] = false;
+            }}
 					break;
-			} // for
             break;
     } // switch    
     
     string seed = seedTextBox.get_text();
-
-    cout << "VALUES BITCHES" << endl << playerAI[0] << endl << playerAI[1] << endl << playerAI[2]<< endl << playerAI[3] << endl;
+    if(seed == "")
+    {
+        seedNumber = 0;
+    }
+    else
+    {
+        stringstream ss;
+        ss << seed;
+        ss >> seedNumber;
+    }
     
-    delete []playerAI;
-
 } // MyDialogBox::MyDialogBox
 
 MyDialogBox::~MyDialogBox() {

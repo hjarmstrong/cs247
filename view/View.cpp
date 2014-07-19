@@ -13,12 +13,6 @@
 
 using namespace std;
 
-// Sets the horizontal box to have homogeneous spacing (all elements are of the same size), and to put 10 pixels
-// between each widget. Initializes the pixel buffer for the null place holder card, and the 10 of spades.
-// Puts a frame in the window, and lays out the widgets horizontally. Four widgets are images, the fifth is a button
-// with an image in it.
-//
-// Since widgets cannot be shared, must use pixel buffers to share images.
 View::View(Model *m) : model(m), commandButtons(true, 10), scores( true, 10 ), vbox( true, 10) 
 {
     for(int i = 0; i <= 7; i++)
@@ -50,20 +44,26 @@ View::View(Model *m) : model(m), commandButtons(true, 10), scores( true, 10 ), v
     newGame.signal_clicked().connect( sigc::mem_fun( *this, &View::newGameAction ) );
 
     rageQuit.set_label("RageQuit");
+    rageQuit.signal_clicked().connect( sigc::mem_fun( *this, &View::rageQuitAction ) );
+
     quitGame.set_label("End Current Game");
+    quitGame.signal_clicked().connect( sigc::mem_fun( *this, &View::endGameAction ) );
+
     quit.set_label("Quit");
+    quit.signal_clicked().connect( sigc::mem_fun( *this, &View::quitGameAction ) );
 
     commandButtons.add(newGame);
     commandButtons.add(rageQuit);
     commandButtons.add(quitGame);
+    commandButtons.add(quit);
 
     frame.add(commandButtons);
 
     hbox.at(0)->add(frame);
 	
     
-    currentTurn.set_label("It is Player 1's Turn to Play");
-    currentAction.set_label("You must discard");
+    currentTurn.set_label("There is no Game in Progress");
+    currentAction.set_label("Press New Game to start a new Game");
     hbox.at(5)->add(currentTurn);
     hbox.at(5)->add(currentAction); 
 	// Initialize 4 empty cards and place them in the box.
@@ -98,12 +98,12 @@ View::View(Model *m) : model(m), commandButtons(true, 10), scores( true, 10 ), v
     }
 
     // We start with a theoretical hand of all 7s because it indicates that the player should start a new game.
-   	const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getCardImage( Card(SPADE, SEVEN) );
 
 	for(int i = 0; i < 13; i++)
     {
-	    hand[i] = new Gtk::Image( cardPixbuf );	
+	    hand[i] = new Gtk::Image( nullCardPixbuf );	
 	    button[i].set_image( *hand[i] );
+        button[i].set_sensitive(false);
     }
 			
 	// Add the button to the box.
@@ -116,8 +116,6 @@ View::View(Model *m) : model(m), commandButtons(true, 10), scores( true, 10 ), v
        button[i].signal_clicked().connect( sigc::bind<int>( sigc::mem_fun(*this, &View::cardButtonClicked), i) );
 	}
 
-
-	// The final step is to display this newly created widget.
 	show_all();
 
 	model->subscribe(this);
@@ -126,25 +124,45 @@ View::View(Model *m) : model(m), commandButtons(true, 10), scores( true, 10 ), v
 
 void View::update() 
 {
-    //Update Table
-    vector<vector<Card *> > newCards = model->currentTable()->playedCards(); 
-    for(int i = 0;i < 4; i++)
-    {
-        for(int j = 0; j < 13; j++)
-        {
-            if(newCards.at(i).at(j) != NULL)
-            {
-   	            const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getCardImage( *newCards.at(i).at(j) );
-                cardsIMG[i][j]->set(cardPixbuf);
-            }
-        }
-    }
+   //Update Hand
+   if(model->currentTable() == NULL)
+   { 
+       // The game is over
+       currentTurn.set_label("There is no Game in Progress");
+       currentAction.set_label("Press New Game to start a new Game");
 
-    //Update Hand
-   vector<Card *> newHand = model->hand();
+       for(int i = 0; i < 13; i++)
+       {
+           Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getNullCardImage();
+
+           //Deck is responsible for deleting pointers
+           cardReferences[i] = NULL;
+           button[i].set_sensitive(false);
+           hand[i]->set( cardPixbuf );
+           button[i].set_image(*hand[i]);
+           
+       }
+
+       for(int i = 0; i < 4; i++)
+       {
+           for(int j = 0; j < 13; j++)
+           {
+               Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getNullCardImage();
+               cardsIMG[i][j]->set(cardPixbuf);
+           }
+       }
+   }
+   else
+   {
+       vector<Card *> newHand = model->hand();
+  
    for(int i = 0; i < 13; i++)
    {
-        cardReferences[i] = newHand.at(i);
+       if( i < newHand.size())
+            cardReferences[i] = newHand.at(i);
+       else
+           cardReferences[i] = NULL;
+       
         Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getNullCardImage();
         button[i].set_sensitive(false);
         if(cardReferences[i] != NULL)
@@ -156,22 +174,54 @@ void View::update()
         button[i].set_image ( *hand[i] );
    }
 
-    // Display Dialog boxes.
-
+    //Update Table
+    vector<vector<Card *> > newCards = model->currentTable()->playedCards(); 
+    for(int i = 0;i < 4; i++)
+    {
+        for(int j = 0; j < 13; j++)
+        {
+            if(newCards.at(i).at(j) != NULL)
+            {
+   	            const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getCardImage( *newCards.at(i).at(j) );
+                cardsIMG[i][j]->set(cardPixbuf);
+            }
+            else
+            {
+                const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getNullCardImage();
+                cardsIMG[i][j]->set(cardPixbuf);
+            }
+        }
+    }
     //Extra, get legal moves grey out buttons
 
-    //J girls are so cute :P
+    currentTurn.set_label(string("It is Player ") + model->currentPlayer() + string("'s Turn to Play"));
+    currentAction.set_label(string("You must ") + model->currentAction() + string(" a card."));
+
+
+    }
+
+
+    // Display Dialog boxes.
 }
 
 void View::cardButtonClicked(int i)
 {
-    cout << i << endl;
     model->select(*cardReferences[i]);
 }
 
-void View::quitButtonClicked() 
+void View::quitGameAction() 
 {
-    Gtk::Main::quit();
+    hide_all();
+}
+
+void View::endGameAction()
+{
+    model->endGame();
+}
+
+void View::rageQuitAction()
+{
+    model->ragequit();
 }
 
 View::~View() 
@@ -188,5 +238,10 @@ View::~View()
 
 void View::newGameAction()
 {
-    MyDialogBox dialog( *this, "Set up Parameters:" );
+    bool *playerAI = NULL;
+    int seed;
+    MyDialogBox dialog( *this, "Set up Parameters:", playerAI, seed  );
+    
+    model->newGame(seed, playerAI);
+    delete []playerAI;
 }

@@ -25,12 +25,14 @@ Game::Game(bool humanPlayers[]) : deck_(new Deck), currentTable(NULL), roundOver
 
         //assert(input == "h" || input == "H" || input == "c" || input == "C");
 
-        if(humanPlayers[i] == true)
+        if(humanPlayers[i-1] == true)
         {
+            cout << "ok, player " << i << "Is a human" << endl;
             players_.push_back(new HumanPlayer);
         }
         else
         {
+            cout << "ok, plyaer" << i << "Is a Computer" << endl;
             players_.push_back(new ComputerPlayer);
         }
     }
@@ -137,34 +139,31 @@ void Game::score(stringstream &events)
 
 void Game::playTurn(Command op, stringstream &events)
 {
-    int turn = (totalTurn + playerTurn) % players_.size();
-    
     computeLegal();
 
     try
     {
-        if( players_.at(turn)->turn(legalPlays, deck_, currentTable, op) )
+        if( players_.at(turn())->turn(legalPlays, deck_, currentTable, op) )
             totalTurn++;
     }
     catch(int player)
     {
-        totalTurn++;
-        int id = players_.at(player - 1)->id();
-        int Score = players_.at(player - 1)->currentScore();
-        int oldScore = players_.at(player - 1)->oldScore();
-        
-        Player *computer = new ComputerPlayer(oldScore, Score, players_.at(player - 1)->hand(), players_.at(player - 1)->discard(), id);
-        delete players_.at(player - 1);
-        players_.at(player - 1) = computer;
+        int id = players_.at(turn())->id();
+        int Score = players_.at(turn())->currentScore();
+        int oldScore = players_.at(turn())->oldScore();
+        Player *computer = new ComputerPlayer(oldScore, Score, players_.at(turn())->hand(), players_.at(turn())->discard(), id);
+        delete players_.at(turn());
+        players_.at(turn()) = computer;
         computer->turn(legalPlays, deck_, currentTable, Command());
+        totalTurn++;
     }
 
 	computeLegal();
 }    
 
 void Game::computeLegal()
-{
-    int turn = (totalTurn + playerTurn) % players_.size();
+{   
+    int oldTurn = turn();
     if(totalTurn == 52)
     {
         roundOver_ = true;
@@ -175,11 +174,11 @@ void Game::computeLegal()
 
     set<Card> legal = currentTable->legalMoves();       
 
-    for(int k = 0; k < players_.at(turn)->hand().size(); k++)
+    for(int k = 0; k < players_.at(oldTurn)->hand().size(); k++)
     {
-        if(legal.count(*players_.at(turn)->hand().at(k)) != 0)
+        if(legal.count(*players_.at(oldTurn)->hand().at(k)) != 0)
         {
-            legalPlays.push_back(*players_.at(turn)->hand().at(k));
+            legalPlays.push_back(*players_.at(oldTurn)->hand().at(k));
         }
     }
 }
@@ -211,18 +210,12 @@ string Game::getNextAction()
 
 bool Game::humanTurnNext() const
 {
-    int turn = (totalTurn + playerTurn) % players_.size();
-    return players_.at(turn)->isHuman();
+    return players_.at(turn())->isHuman();
 }
 
 const Player * const Game::currentPlayer() const
 {
-    int turn = (totalTurn + playerTurn) % players_.size();
-//    stringstream ss;
-//    ss << turn;
-//    playerLabel = "Player " + ss.str();
-
-    return players_.at(turn);
+     return players_.at(turn());
 }
 
 bool Game::gameOver()
@@ -238,4 +231,14 @@ bool Game::roundOver()
 Table *Game::table()
 {
     return currentTable;
+}
+
+int Game::turn() const
+{
+    return (totalTurn + playerTurn) % players_.size();
+}
+
+const vector<Player *> &Game::players() const
+{
+    return players_;
 }
