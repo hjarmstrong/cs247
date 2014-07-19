@@ -1,6 +1,7 @@
 #include "View.h"
 #include "MyDialogBox.h"
 #include <Card.h>
+#include <Controller.h>
 #include <Model.h>
 #include <gtkmm/window.h>
 #include <gtkmm/image.h>
@@ -15,7 +16,7 @@
 
 using namespace std;
 
-View::View(Model *m) : model(m), commandButtons(true, 10), scores( true, 10 ), vbox( true, 10) 
+View::View(Controller *c, Model *m) : model(m), controller(c), commandButtons(true, 10), scores( true, 10 ), vbox( true, 10) 
 {
     for(int i = 0; i <= 7; i++)
     {
@@ -240,7 +241,7 @@ void View::update()
 
 void View::cardButtonClicked(int i)
 {
-    model->select(*cardReferences[i]);
+    controller->cardButtonClicked(*cardReferences[i]);
 }
 
 void View::quitGameAction() 
@@ -250,12 +251,12 @@ void View::quitGameAction()
 
 void View::endGameAction()
 {
-    model->endGame();
+    controller->endGameAction();
 }
 
 void View::rageQuitAction()
 {
-    model->ragequit();
+    controller->rageQuitAction();
 }
 
 View::~View() 
@@ -276,6 +277,6 @@ void View::newGameAction()
     int seed;
     MyDialogBox dialog( *this, "Set up Parameters:", playerAI, seed  );
     
-    model->newGame(seed, playerAI);
+    controller->newGameAction(seed, playerAI);
     delete []playerAI;
 }

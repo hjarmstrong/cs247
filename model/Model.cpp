@@ -75,11 +75,7 @@ void Model::nextHuman()
                 delete currentGame;
                 currentGame = NULL;
                 break;
-            }
-            else
-            {
-                currentGame->play(events);
-            }
+            }          
         }
         if( !currentGame->humanTurnNext() )
         {
@@ -104,6 +100,7 @@ const vector<string> Model::dialogMessages()
         getline(events, message);
         messages.push_back(message);
     }
+    events.clear();
     return messages;
 }
 

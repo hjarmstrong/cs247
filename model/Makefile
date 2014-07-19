@@ -3,7 +3,7 @@ CXXFLAGS = -Wall -g -fPIC -I../logic -MMD
 LDFLAGS = -shared
 OBJECTS = Subject.o Model.o 
 DEPENDS = ${OBJECTS:.o=.d}
-SO = libmodel.so
+SO = ../libmodel.so
 
 all : ${SO}
 ${SO} : ${OBJECTS}
