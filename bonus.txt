@@ -1,0 +1,5 @@
+There is a visual difference between cards that are legally able to be played and cards that are not.  The cards that can be played are brighter than those that are not and are clickable, clearly indicating which ones are acceptable.  This can be demonstrated with any seed value.
+
+There are labels to indicate whether or not a card in your hand can legally be played.  If there is at least one open move, the label reads "You must play a card." and if there is not a single one, then the lable reads "You must discard a card."  This, along with the previous feature helps to indicate when whether the player should play their high cards or discard their low ones.  Again, this can be demonstrated with any seed value.
+
+Another feature that was added is the ability to check the current score and number of discards of every player before the end of the round.  Below the hand of cards is a score board, clearly showing each player's score from the last round and number of discarded cards in this round.  When the round ends, the score is calculated and shown in a dialog box.  The scoreboard is then updated.
