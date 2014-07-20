@@ -8,11 +8,11 @@
 
 using namespace std;
 
-Model::Model() : currentGame(NULL)
+Model::Model() : currentGame(NULL)  //Initializes the current game to NULL on construction
 {
 }
 
-void Model::newGame(int seed, bool players[])
+void Model::newGame(int seed, bool players[])  //Gets the random value and lets every computer play until it is a human's turn to move.  Then notify's the player of their options.
 {
     // It is safe to delete NULL
     delete currentGame;
@@ -28,7 +28,7 @@ void Model::newGame(int seed, bool players[])
     notify();
 }
 
-void Model::ragequit()
+void Model::ragequit()  // Converts the human player into a computer player
 {
     if( currentGame == NULL)
         return;
@@ -42,7 +42,7 @@ void Model::ragequit()
     notify();
 }
 
-void Model::select(Card c)
+void Model::select(Card c)  //Either plays or discards the card c, depending on available options
 {
     Command com;
     com.card = c;
@@ -63,7 +63,7 @@ void Model::select(Card c)
     notify();
 }
 
-void Model::nextHuman()
+void Model::nextHuman() // Plays the computer players' turns until the next human player requires an action
 {
     while ( !currentGame->humanTurnNext() || currentGame->roundOver() )
     {   
@@ -84,14 +84,14 @@ void Model::nextHuman()
     }
 }
 
-void Model::endGame()
+void Model::endGame()  //Deletes the old game and sets it to NULL
 {
     delete currentGame;
     currentGame = NULL;
     notify();
 }
 
-const vector<string> Model::dialogMessages()
+const vector<string> Model::dialogMessages() //Create the vector of messages that need to be displayed in dialog boxes
 {
     string message;
     vector<string> messages;
@@ -104,7 +104,7 @@ const vector<string> Model::dialogMessages()
     return messages;
 }
 
-const Table *Model::currentTable() const
+const Table *Model::currentTable() const //Returns the current table
 {
     if(currentGame != NULL)
         return currentGame->table();
@@ -114,7 +114,7 @@ const Table *Model::currentTable() const
     
 }
 
-const std::vector<Card *> &Model::hand() const
+const std::vector<Card *> &Model::hand() const //Returns the current player's hand
 {
     if(currentGame != NULL)
         return currentGame->currentPlayer()->hand();
@@ -122,7 +122,7 @@ const std::vector<Card *> &Model::hand() const
     throw("No Game in Progress");
 }
 
-const std::string Model::currentPlayer() const
+const std::string Model::currentPlayer() const //Gets the current player in the turn order
 {
     stringstream ss;
     ss << "Player " << currentGame->turn() + 1;
@@ -130,12 +130,12 @@ const std::string Model::currentPlayer() const
     return ret;
 }
 
-const std::string Model::currentAction() const
+const std::string Model::currentAction() const //Gets the next action to take, either play or discard
 {
     return currentGame->getNextAction();
 }
 
-string *Model::currentScoreBoard() const
+string *Model::currentScoreBoard() const // Creates the messages detailing the round's scores for each player
 {
     string *ret = new string[4];
     for(int i = 0; i < 4; i++)
@@ -152,7 +152,7 @@ string *Model::currentScoreBoard() const
     return ret;
 }
 
-const vector<Card> Model::legalCards() const
+const vector<Card> Model::legalCards() const //Returns the vector of legal cards that can be played this turn
 {
     return currentGame->legalMoves();
 }

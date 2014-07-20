@@ -8,7 +8,7 @@ using namespace std;
 
 vector<Card *> cards_;
 
-Deck::Deck()
+Deck::Deck() //Add 52 cards to our deck, 4*13.
 {
     for(int i = 0; i < SUIT_COUNT; i++)
     {
@@ -20,7 +20,7 @@ Deck::Deck()
     }
 }
 
-Deck::~Deck()
+Deck::~Deck() //Delete each card in our deck.
 {
     for(vector<Card *>::iterator it = cards_.begin(); it != cards_.end(); it++)
     {
@@ -28,12 +28,12 @@ Deck::~Deck()
     }
 }
 
-const vector<Card *> &Deck::deckList() const
+const vector<Card *> &Deck::deckList() const // Accessor
 {
     return cards_;
 }
 
-void Deck::shuffle()
+void Deck::shuffle() // Randomly permute the set of cards in our deck
 {
 	int n = kCardCount;
 
@@ -47,7 +47,7 @@ void Deck::shuffle()
 	}
 }
 
-ostream &operator<<(ostream &sout, const Deck &d)
+ostream &operator<<(ostream &sout, const Deck &d) //Print the set of cards
 {
     int line = 0;
     for(vector<Card *>::const_iterator it = d.cards_.begin(); it != d.cards_.end(); it++)

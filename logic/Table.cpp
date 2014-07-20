@@ -7,7 +7,7 @@
 
 using namespace std;
 
-Table::Table()
+Table::Table() //Set every card as not having yet been played
 {
     for(int i = 0; i < 13; i++)
     {
@@ -18,7 +18,7 @@ Table::Table()
     }
 }
 
-void Table::playCard(Card e)
+void Table::playCard(Card e) //Take a card and set its value to true in the "played" array
 {
     if(e.getSuit() == SPADE)
     {
@@ -43,7 +43,7 @@ void Table::playCard(Card e)
 
 }
 
-set<Card> Table::legalMoves()
+set<Card> Table::legalMoves() //From the cards already played on the tables, determine which new cards can be legally played for each suit.  Then return the total set.
 {
     set<Card> ret;
     if(spades_[SEVEN] == false)
@@ -117,7 +117,7 @@ set<Card> Table::legalMoves()
     return ret;
 }
 
-std::vector<std::vector<Card *> > Table::playedCards() const
+std::vector<std::vector<Card *> > Table::playedCards() const //For each suit, push back a pointer to every card that has been played this round
 {
     std::vector<std::vector<Card *> > returnVector;
     std::vector<Card *> suitVector;
@@ -188,7 +188,7 @@ std::vector<std::vector<Card *> > Table::playedCards() const
     return returnVector;
 }
 
-std::ostream &operator<<(std::ostream &sout, const Table &t)
+std::ostream &operator<<(std::ostream &sout, const Table &t) //Print the cards on the table, done by looping through each suit
 {
 string ranks[13] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
 

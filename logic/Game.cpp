@@ -12,18 +12,15 @@
 
 using namespace std;
 
-Game::Game(bool humanPlayers[]) : deck_(new Deck), currentTable(NULL), roundOver_(false), gameOver_(false)  //This somehow needs to be passed a bool humanPlayers[] from main.
+Game::Game(bool humanPlayers[]) : deck_(new Deck), currentTable(NULL), roundOver_(false), gameOver_(false) //Initialize a new game given inputs from the view
 {
-    legalPlays.push_back(Card(SPADE,SEVEN));
+    legalPlays.push_back(Card(SPADE,SEVEN)); //Define the first only legal play to be the seven of spades
 
     string input;
 
-    for(int i = 1; i <= kNumPlayers; i++)
+    for(int i = 1; i <= kNumPlayers; i++) // Get whether each of our k players are human
     {
         cout << "Is player " << i << " a human(h) or a computer(c)?" << endl << ">";
-        //cin >> input;
-
-        //assert(input == "h" || input == "H" || input == "c" || input == "C");
 
         if(humanPlayers[i-1] == true)
         {
@@ -32,13 +29,13 @@ Game::Game(bool humanPlayers[]) : deck_(new Deck), currentTable(NULL), roundOver
         }
         else
         {
-            cout << "ok, plyaer" << i << "Is a Computer" << endl;
+            cout << "ok, player" << i << "Is a Computer" << endl;
             players_.push_back(new ComputerPlayer);
         }
     }
 }
 
-Game::~Game()
+Game::~Game() //Delete all of the players, the deck and table
 {
     for(vector<Player *>::iterator it = players_.begin(); it != players_.end(); it++)
     {
@@ -49,7 +46,7 @@ Game::~Game()
     delete currentTable;
 }
 
-void Game::play(stringstream &events)
+void Game::play(stringstream &events) //Initialize a new round to be played, deal the deck, determine who starts and let them play first
 {
     deck_->shuffle();
     vector<Card *> hand;
@@ -86,7 +83,7 @@ void Game::play(stringstream &events)
 
 }
 
-void Game::score(stringstream &events)
+void Game::score(stringstream &events) //Get the discarded cards and tally total points for the round.  Check if anyone has >=80 points, and if they do, return the winner(s) who have the lowest score
 {
     for(int i = 0; i < kNumPlayers; i++)
     {
@@ -103,9 +100,8 @@ void Game::score(stringstream &events)
 
     int lowestScore = numeric_limits<int>::max();
     vector<int> lowestOwner;
-    lowestOwner.push_back(-1);
 
-    for(int i = 0; i < players_.size(); i++)
+    for(int i = 0; i < players_.size(); i++) //Check each player's score, and if it is our current lowest store their id and score
     {
         if(players_.at(i)->currentScore() < lowestScore)
         {
@@ -113,12 +109,12 @@ void Game::score(stringstream &events)
             lowestScore = players_.at(i)->currentScore();
             lowestOwner.push_back(i + 1);
         }
-        if(players_.at(i)->currentScore() == lowestScore)
+        if(players_.at(i)->currentScore() == lowestScore) //If their score is the same as the current lowest, add their id to the pool
         {
             lowestOwner.push_back(i + 1);
         }
 
-        if(players_.at(i)->currentScore() >= 80)
+        if(players_.at(i)->currentScore() >= 80) //If anyone's score is 80 or higher, the game is over
         {
             gameOver_ = true;
         }
@@ -126,7 +122,7 @@ void Game::score(stringstream &events)
 
     if(gameOver_ == true)
     {
-        for(vector<int>::iterator it = lowestOwner.begin(); it != lowestOwner.end(); it++)
+        for(vector<int>::iterator it = lowestOwner.begin(); it != lowestOwner.end(); it++) //If the game is over, return the winner(s)
         {
             events << "Player " << *it << " wins!" << endl;
             return;
@@ -134,12 +130,12 @@ void Game::score(stringstream &events)
     }
     else
     {
-        play(events);
+        play(events); //Otherwise, just play another round
     }
 }
 
 
-void Game::playTurn(Command op, stringstream &events)
+void Game::playTurn(Command op, stringstream &events) //Get the set of legal moves for the turn player and request them to take their turn
 {
     computeLegal();
 
@@ -148,7 +144,7 @@ void Game::playTurn(Command op, stringstream &events)
         if( players_.at(turn())->turn(legalPlays, deck_, currentTable, op) )
             totalTurn++;
     }
-    catch(int player)
+    catch(int player) //If there is an error, then turn them intoa computer and let them play instead
     {
         int id = players_.at(turn())->id();
         int Score = players_.at(turn())->currentScore();
@@ -163,7 +159,7 @@ void Game::playTurn(Command op, stringstream &events)
 	computeLegal();
 }    
 
-void Game::computeLegal()
+void Game::computeLegal() //Determine the legal set of cards that could be played from the current player's hand 
 {   
     int oldTurn = turn();
     if(totalTurn == 52)
@@ -185,7 +181,7 @@ void Game::computeLegal()
     }
 }
 
-void Game::computeLegal(int playerNumber)
+void Game::computeLegal(int playerNumber)  //Determine the legal set of cards the could be played from a specific player's hand
 {
     legalPlays.clear();
 
@@ -200,7 +196,7 @@ void Game::computeLegal(int playerNumber)
     }
 }
 
-string Game::getNextAction()
+string Game::getNextAction() //If there are legal cards to be played, the next action is play, otherwise it must discard
 {
     if(legalPlays.size() > 0)
     {
@@ -210,42 +206,42 @@ string Game::getNextAction()
     return "discard";
 }
 
-bool Game::humanTurnNext() const
+bool Game::humanTurnNext() const //Return whether or not the next player is human
 {
     return players_.at(turn())->isHuman();
 }
 
-const Player * const Game::currentPlayer() const
+const Player * const Game::currentPlayer() const //Get the current player
 {
      return players_.at(turn());
 }
 
-bool Game::gameOver()
+bool Game::gameOver() //Accessor
 {
     return gameOver_;
 }
 
-bool Game::roundOver()
+bool Game::roundOver() //Accessor
 {
     return roundOver_;
 }
 
-Table *Game::table()
+Table *Game::table() //Accessor
 {
     return currentTable;
 }
 
-int Game::turn() const
+int Game::turn() const //The total number of turns that have passed, plus the player who went first, mod the number of players return the player who's turn it is
 {
     return (totalTurn + playerTurn) % players_.size();
 }
 
-const vector<Player *> &Game::players() const
+const vector<Player *> &Game::players() const //Accessor
 {
     return players_;
 }
 
-const vector<Card> Game::legalMoves() const
+const vector<Card> Game::legalMoves() const //Accessor
 {
     return legalPlays;
 }

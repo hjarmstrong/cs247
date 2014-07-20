@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void Model::newgame(int seed, bool players[])
+void Model::newgame(int seed, bool players[])  //Gets the random value and lets every computer play until it is a human's turn to move.  Then notify's the player of their options.
 {
     // It is safe to delete NULL
     delete currentGame;
@@ -24,9 +24,9 @@ void Model::newgame(int seed, bool players[])
 
 
 
-quit(); // check with example.
+quit();  //Closes the UI
 
-Model::ragequit()
+Model::ragequit() // Converts the human player into a computer player
 {
     Command c;
     c.type = RAGEQUIT;
@@ -39,7 +39,7 @@ Model::ragequit()
     notify();
 }
 
-select (Card c)
+select (Card c)  //Either play or discard the card c, depending on 
 {
     Command com;
     com.type = //implement next action method in game class

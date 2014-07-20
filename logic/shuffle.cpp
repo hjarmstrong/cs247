@@ -5,7 +5,7 @@ CARD_COUNT is the constant 52
 cards_ is an array of pointers to cards
 */
 
-void shuffle(){
+void shuffle(){ //Permute the cards into a pseudo-random order
 	int n = CARD_COUNT;
 
 	while ( n > 1 ) {
