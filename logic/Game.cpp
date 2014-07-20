@@ -109,8 +109,8 @@ void Game::score(stringstream &events) //Get the discarded cards and tally total
             lowestScore = players_.at(i)->currentScore();
             lowestOwner.push_back(i + 1);
         }
-        if(players_.at(i)->currentScore() == lowestScore) //If their score is the same as the current lowest, add their id to the pool
-        {
+        else if(players_.at(i)->currentScore() == lowestScore) //If their score is the same as the current lowest, add their id to the pool
+        {            
             lowestOwner.push_back(i + 1);
         }
 
@@ -125,8 +125,8 @@ void Game::score(stringstream &events) //Get the discarded cards and tally total
         for(vector<int>::iterator it = lowestOwner.begin(); it != lowestOwner.end(); it++) //If the game is over, return the winner(s)
         {
             events << "Player " << *it << " wins!" << endl;
-            return;
         }
+        return;
     }
     else
     {
