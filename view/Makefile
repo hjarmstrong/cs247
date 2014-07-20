@@ -4,13 +4,18 @@ CXXFLAGS = -Wall -I../model -I../logic -I../controller -O -g -fPIC -MMD `pkg-con
 LDFLAGS = -shared
 OBJS = DeckGUI.o View.o MyDialogBox.o
 DEPENDS = ${OBJS:.o=.d}
-SO = ../libview.so
+#SO = ../libview.so
+STATIC = ../libview.a
 
-all : ${SO}
+#all : ${SO}
+all : ${STATIC}
 
-$(SO): $(OBJS)
-	$(CXX) $(OBJS) $(CXXFLAGS) -o $@ $(LDFLAGS)
+#$(SO): $(OBJS)
+#	$(CXX) $(OBJS) $(CXXFLAGS) -o $@ $(LDFLAGS)
+
+$(STATIC): $(OBJS)
+	 ar rvs ${STATIC} ${OBJS} 
 
 clean:
-	rm ${DEPENDS} ${SO} $(OBJS)
+	rm ${DEPENDS} ${STATIC} $(OBJS)
 

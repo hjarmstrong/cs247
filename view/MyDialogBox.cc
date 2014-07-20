@@ -14,6 +14,9 @@
 
 using namespace std;
 
+// This code was used from tutorial example, copyright and coments as well as style have been maintained.
+
+
 // Specifies the parent window of the dialog box and the title of the dialog box.
 MyDialogBox::MyDialogBox( Gtk::Window & parentWindow, string title, bool *&playerAI, int &seedNumber) : Dialog( title, parentWindow, true, true ) {
 	vector<string> messages;

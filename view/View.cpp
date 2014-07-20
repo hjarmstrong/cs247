@@ -16,6 +16,8 @@
 
 using namespace std;
 
+// The cxr builds the basic windows, which consists of 7 slots in a Vbox, slot 1 is for the cation buttons, slot 2-5 are for
+// The table of played cards and slot 6 is for instructions to make the plays options clear. Finally slot 7 is the scoreboard.
 View::View(Controller *c, Model *m) : model(m), controller(c), commandButtons(true, 10), scores( true, 10 ), vbox( true, 10) 
 {
     for(int i = 0; i <= 7; i++)
@@ -43,6 +45,7 @@ View::View(Controller *c, Model *m) : model(m), controller(c), commandButtons(tr
         vbox.add(*hbox.at(i));
     }
 
+    // Action buttons, which control game level actions. This is not gameplay.
     newGame.set_label("Start New Game");
     newGame.signal_clicked().connect( sigc::mem_fun( *this, &View::newGameAction ) );
 
@@ -64,18 +67,19 @@ View::View(Controller *c, Model *m) : model(m), controller(c), commandButtons(tr
 
     hbox.at(0)->add(frame);
 	
-    
+    // Instructions default    
     currentTurn.set_label("There is no Game in Progress");
     currentAction.set_label("Press New Game to start a new Game");
     hbox.at(5)->add(currentTurn);
     hbox.at(5)->add(currentAction); 
-	// Initialize 4 empty cards and place them in the box.
 
+    // Setting up scoreboard
     scoreboard.set_label("Score Board");
 	scoreboard.set_label_align( Gtk::ALIGN_CENTER, Gtk::ALIGN_TOP );
 	scoreboard.set_shadow_type( Gtk::SHADOW_ETCHED_OUT );
     scoreboard.add(scores);
     
+    //Scores start off blank 
     player1.set_label("Player 1 \n Score:  \n Discards:");
     player2.set_label("Player 2 \n Score:  \n Discards:");  
     player3.set_label("Player 3 \n Score:  \n Discards:");
@@ -100,7 +104,7 @@ View::View(Controller *c, Model *m) : model(m), controller(c), commandButtons(tr
 	    } 
     }
 
-    // We start with a theoretical hand of all 7s because it indicates that the player should start a new game.
+    // Building the hand for gameplay.
 
 	for(int i = 0; i < 13; i++)
     {
@@ -162,8 +166,12 @@ void View::update()
    }
    else
    {
-       vector<Card *> newHand = model->hand();
-  
+       // It is time for a human's turn, here we set up the UI for them
+
+
+   vector<Card *> newHand = model->hand();
+   
+   // Here we set up Card buttons that can't be used
    for(int i = 0; i < 13; i++)
    {
        if( i < newHand.size())
@@ -226,7 +234,8 @@ void View::update()
 
 
     }
-
+   
+   // Print any notifications model has collected for us.
    vector<string> popUps = model->dialogMessages();
    for(vector<string>::iterator it = popUps.begin(); it != popUps.end(); it++)
    {
@@ -263,7 +272,10 @@ View::~View()
 {
     for(int i = 0; i < 4; i++)
         for(int j = 0; j < 13; j++)
-            delete cardsIMG[i][j];
+            delete cardsIMG[i][j];  
+    
+    for(int i = 0; i < 13; i++)
+        delete hand[i];
 
     for(vector<Gtk::HBox*>::iterator it = hbox.begin(); it != hbox.end(); it++)
     {

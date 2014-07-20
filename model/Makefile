@@ -3,13 +3,14 @@ CXXFLAGS = -Wall -g -fPIC -I../logic -MMD
 LDFLAGS = -shared
 OBJECTS = Subject.o Model.o 
 DEPENDS = ${OBJECTS:.o=.d}
-SO = ../libmodel.so
+#SO = ../libmodel.so
+STATIC = ../libmodel.a
 
-all : ${SO}
-${SO} : ${OBJECTS}
-	${CXX} ${CXXFLAGS} ${OBJECTS} -o $@ $(LDFLAGS)
+all : ${STATIC}
+${STATIC} : ${OBJECTS}
+	 ar rvs ${STATIC} ${OBJECTS}
 
 clean :
-	rm -rf ${DEPENDS} ${OBJECTS} ${SO}
+	rm -rf ${DEPENDS} ${OBJECTS} ${STATIC}
 
 -include ${DEPENDS} # reads the .d files and reruns dependencies

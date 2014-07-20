@@ -1,5 +1,5 @@
-#ifndef __OTHER_WORLD_H
-#define __OTHER_WORLD_H
+#ifndef VIEW_H
+#define VIEW_H
 #include <gtkmm/window.h>
 #include <gtkmm/image.h>
 #include <gtkmm/box.h>
@@ -55,11 +55,11 @@ private:
     Gtk::Label                      player4;
 
 
-	Gtk::Image                    * cardsIMG[4][13];          // Images to display.
-    Card                          * cardReferences[13];  
-	Gtk::Image                    * hand[13];          // Images to display.
+	Gtk::Image                    * cardsIMG[4][13];      // Images to display.
+    Card                          * cardReferences[13];   // relates card objects to images 
+	Gtk::Image                    * hand[13];             // Images to display.
 	Gtk::Button                     button[13];           // Button that will hold card images.
-	std::vector<Gtk::HBox*>         hbox;             // Horizontal box for aligning widgets in the window.
+	std::vector<Gtk::HBox*>         hbox;             // Horizontal box for aligning card widgets in the window.
     Gtk::VBox                       vbox;             // vertical box for all the controles
 	Gtk::Frame                      frame;            // Create a nice framed border for the box.
 };
