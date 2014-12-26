@@ -1,4 +1,4 @@
 cs247
 =====
 
-It is an accademic offence to leak this source code.
+A Simple MVC card game. Depends on GTKmm.
